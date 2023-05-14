@@ -1,7 +1,7 @@
 import "./footer.css";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import logo from '../savior.svg'
 import {
   faFacebook,
   faInstagram,
@@ -16,9 +16,9 @@ function Footer() {
 
         <div className="footer-container">
           <img
-            src="https://www.figma.com/file/8WOK9IiiJJFwH4mokwCJwH/eCommerce?node-id=2-193&t=53eWlZkaC4YKoDmI-4"
+             src={logo}
             alt="logo"
-          />
+         height="200px"  width="200px"/>
 
 
         </div>
