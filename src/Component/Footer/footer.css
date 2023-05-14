@@ -1,0 +1,120 @@
+.parent_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 200px;
+
+  }
+  footer{
+  box-shadow: 0px 5px 15px 0px rgba(10, 10, 10, 0.1);
+  }
+  .line {
+    height: 1px;
+    width: 95%;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+.footer-container1 {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  /* padding-left: 10%; */
+ 
+}
+.footer-container1 a {
+  text-decoration: none;
+  color:rgba(0, 0, 0, 0.7);
+   width:210px;
+   margin-top: 20px;
+}
+
+.footer-container1 h3 {
+  color: var( --accent-colors);
+}
+
+.copyright{
+  font-size: small;
+  color: var(--accent-colors);
+}
+
+.footer-container1 a.active {
+  color: var(--secondary-color);
+}
+.social-icons-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  color: var(--button);
+}
+
+.social-icons-container a {
+  color: inherit;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.social-icons-container a:hover {
+  color:#B6BFA3
+}
+.footer-section{
+    display: flex;
+    /* gap:80px; */
+    width: 900px;
+    height: auto;
+    justify-content: flex-end;
+}
+
+.social{
+    display: flex;
+    width: 95%;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 30px;
+    align-items: center;
+}
+.social p{
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.6);
+}
+  @media screen and (max-width: 768px) {
+    .parent_container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      font-size: 14px;
+     
+    }
+  
+   .Email{
+    font-size: 12px;
+   }
+  
+ 
+    .footer-container1 .location_ {
+      margin-top: 0px;
+    }
+  
+    .footer-container1 {
+      margin-bottom: 0;
+      line-height: 2;
+      padding: 0;
+    }
+    .footer-container1 {
+      padding: 15px 0;
+    }
+  
+    .links {
+      margin-top: 10px;
+    }
+  
+    .footer-container1 a {
+      margin-top: 10px;
+    }
+  
+    .footer-container1 .copyright {
+      margin: 0 0;
+    }
+  
+    .footer-container1 .links {
+      margin: 0;
+    }
+  }
