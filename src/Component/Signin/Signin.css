@@ -1,0 +1,13 @@
+.login-section{
+    width: 90%;
+    margin: 0 auto;
+}
+.section3{
+    box-shadow: 0px 5px 15px 0px rgba(10, 10, 10, 0.1);
+    width: 458px;
+    height: 220px;
+    margin-right: 100px;
+}
+.forgot-password a{
+    color: var(--primary-color);
+}
