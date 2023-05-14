@@ -1,9 +1,9 @@
 import React from 'react';
-
+import Register from '../../Component/Register/Register';
 function Signup() {
     return (
         <div>
-            Signup
+            <Register/>
         </div>
     );
 }

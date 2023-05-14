@@ -1,0 +1,163 @@
+.signupForm{
+    display: flex;
+    justify-content: space-evenly;
+    height: 600px;
+    align-items: center;
+}
+
+.section1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 555px;
+    margin-left: 100px;
+    
+    /* height: 300px; */
+}
+.section1 h1{
+    font-size: 54px;
+    color: var(--primary-color);
+    font-family: Roboto;
+}
+.section1 p{
+    color: #9DAFBD;
+    width: 458px;
+    padding: 20px 0;
+}
+.section2{
+    box-shadow: 0px 5px 15px 0px rgba(10, 10, 10, 0.1);
+    width: 600px;
+    height: 350px;
+    margin-right: 100px;
+  
+}
+
+.input-section{
+    display: flex;
+  justify-content:space-evenly;
+  margin: 5px;
+}
+  .register-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+    height: 100%;
+    justify-content: center;
+  }
+  .input-group {
+    position: relative;
+    width: auto;
+  }
+  .input-group .input:focus {
+    border-color: var(--primary-color);
+  }
+  .register-inputs .input-group input {
+    padding: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 14px;
+    width: 100%;
+  }
+  
+  .input-radio{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  
+  @media screen and (max-width: 768px) {
+    .input-group {
+      width: 100%;
+  }
+  
+  .register-inputs{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+   
+  }
+  .register-links{
+    width: 100%;
+  }
+  
+  
+  .register-form{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto;
+    padding: 35px 0;
+  }
+  
+  
+  
+  }
+  
+  .input:focus ~ .input-label,
+  .input:valid ~ .input-label {
+    top: -9px;
+    left: 10px;
+    color: #aaa;
+    font-size: 13px;
+    position: absolute;
+    pointer-events: none;
+    transition: all 0.2s ease-out;
+    background-color: white;
+    padding: 3px;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: red;
+  }
+  
+  .input-label {
+    position: absolute;
+    left: 10px;
+    top: 19px;
+    color: #aaa;
+    transition: all 0.2s ease-out;
+  }
+  
+  .register-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 20px;
+  }
+  
+  .register-buttons button {
+    margin-left: 10px;
+    padding: 12px 24px; 
+    background-color: var(--button); 
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    height: 40px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .error {
+    color: red;
+    font-size: x-small;
+    margin-bottom: 20px;
+  }
+  
+  .showing-password {
+    position: absolute;
+    left: 85%;
+    top: 18px;
+  }
