@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./header.css";
+import logo from '../savior.svg'
 function header() {
   return (
     <header>
@@ -8,7 +9,7 @@ function header() {
         <nav>
           <div className="nav-link">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4pjIo_GrDysJa_uTh-_mAipJQ3YEy95xYmVCgAtpAtQ&s"
+            src={logo}
             alt=""
             height="100px"
             width="100px"
