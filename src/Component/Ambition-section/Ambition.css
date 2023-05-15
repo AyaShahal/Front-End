@@ -1,0 +1,83 @@
+.Ambition-section{
+    /* height: 492px; */
+    padding: 100px;
+}
+
+.Ambition-title h1{
+    font-size: 54px;
+    color: var(--button);
+    text-align: center;
+    padding: 50px;
+}
+.Ambition-text p{
+height: 59px;
+width: 1022px;
+color: #9DAFBD;
+text-align: center;
+margin: 0 auto;
+}
+.tgtg-stats-promo__icon[data-v-22839a02] {
+    height: 8.5rem;
+    margin-bottom: -2rem;
+    width: 8.5rem;
+}
+.card-space:hover .card {
+    transform: rotateY(-180deg);
+  }
+  
+  .card {
+    border-radius: 10px;
+    height: 300px;
+    margin: 10px;
+    width: 326px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 30 ease; 
+  }
+  
+  .card h1 {
+    margin-top: 5px;
+  }
+  
+  .card p {
+    margin-top: 0;
+  }
+  
+  .face {
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .face.front {
+    text-align: center;
+    z-index: 20;
+    backface-visibility: hidden;
+    transform: rotateY(0deg);
+  }
+  
+  .face.back {
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+  }
+  .card h1{
+    font-size: 18px;
+  }
+  .face.back p{
+    text-align: center;
+    padding: 10px;
+  }
+  .Ambition-card{
+    display: flex;
+    justify-content: center;
+  }
+
+  .face.front p{
+  font-size: 14px;
+  color:#9DAFBD;
+  text-align: center;
+  padding: 20px;
+  }
