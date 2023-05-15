@@ -73,6 +73,7 @@ margin: 0 auto;
   .Ambition-card{
     display: flex;
     justify-content: center;
+    padding: 20px;
   }
 
   .face.front p{
