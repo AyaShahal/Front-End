@@ -1,0 +1,28 @@
+.solution-section{
+    text-align: center;
+    height: 700px;
+    padding: 50px;
+}
+.Solution{
+    display: flex;
+}
+
+.solution-title h1{
+    font-size: 54px;
+    padding: 50px;
+}
+.solution-title p{
+    font-size: 128px;
+    font-family: Source Serif ;
+    width: 1095.9px;
+    color: var(--button);
+    margin: 0 auto;
+
+}
+.paragraph-section p{
+    font-size: 32px;
+    color: #9DAFBD;
+    width: 689px;
+    margin: 0 auto;
+    padding: 30px;
+}
