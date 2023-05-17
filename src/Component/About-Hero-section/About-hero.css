@@ -1,0 +1,66 @@
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 669px;
+  background-color: var(--primary-color);
+}
+.about-section h1,
+.about-section h6 {
+  width: 395px;
+  color: var(--button);
+  font-size: 54px;
+  font-weight: 100;
+}
+.about-section h1 {
+  font-weight: bold;
+  width: 500px;
+}
+.about-section p {
+  color: #9dafbd;
+  font-size: 14px;
+  width: 300px;
+  padding: 30px 0;
+}
+.about-content .circle-image {
+  position: relative;
+  width: 459px;
+  height: 459px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.slick-dots li button {
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slick-dots li button:before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.slick-dots li.slick-active button:before {
+  background-color: var(--button);
+}
