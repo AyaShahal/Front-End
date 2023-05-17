@@ -9,12 +9,13 @@
   .header-container-inner {
     width: 50%;
   }
-  
   .header-container-inner h1 {
     font-size: 52px;
     margin-bottom: 32px;
     line-height: 1.05;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   }
+  
   
   .header-container-inner p {
     font-size: 20px;
@@ -24,22 +25,26 @@
   
   .btn:link,
   .btn:visited {
-    font-size: 20px;
-    font-weight: 600;
-  
-    color: #fff;
-    text-decoration: none;
-    display: inline-block;
-    padding: 16px 32px;
     margin-left: 10px;
-    background-color: var(--button); 
+    padding: 12px 24px;
+    background-color: var(--button);
     color: #fff;
     border: none;
     border-radius: 25px;
+    text-decoration: none;
     font-weight: bold;
     cursor: pointer;
+    height: 40px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn:hover {
+  opacity: 0.5;
+}
+
   
-  }
   
   h2 {
     font-size: 44px;
