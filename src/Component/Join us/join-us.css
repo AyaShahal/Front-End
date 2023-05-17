@@ -1,0 +1,41 @@
+.join{
+    padding: 60px;
+    text-align: center;
+    height: 670px;
+    background-color: var(--button);
+}
+.join h1{
+    font-size: 128px;
+    padding: 20px;
+    font-family: Source Serif;
+    color: var(--primary-color);
+    font-weight: 10;
+}
+.join p{
+   width: 555px;
+    margin: 0 auto;
+    padding: 40px;
+    color: #fff;
+}
+.join span{
+    font-size: 14px;
+    padding: 30px;
+    color: var(--primary-color);
+}
+.btn-primary {
+   
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    height: 40px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
