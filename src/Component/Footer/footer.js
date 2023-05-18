@@ -1,7 +1,7 @@
 import "./footer.css";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import logo from '../savior.svg'
+import logo from '../Savior-removebg-preview.png'
 import {
   faFacebook,
   faInstagram,
@@ -18,7 +18,7 @@ function Footer() {
           <img
              src={logo}
             alt="logo"
-         height="200px"  width="200px"/>
+         height="150px"  width="150px"/>
 
 
         </div>
