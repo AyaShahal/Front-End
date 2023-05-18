@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "./header.css";
-import logo from '../savior.svg'
+import logo from '../Savior-removebg-preview.png'
 function header() {
   return (
     <header>
@@ -15,13 +15,16 @@ function header() {
             width="100px"
           />
             <NavLink to="/ " className="links">
-              Home{" "}
+              Home
             </NavLink>
             <NavLink to="/About" className="links">
-              About{" "}
+              About
             </NavLink>
             <NavLink to="/Food" className="links">
-              Surplus Food{" "}
+              Surplus Food
+            </NavLink>
+            <NavLink to="/Contact Us" className="links">
+            Contact Us
             </NavLink>
           </div>
         </nav>

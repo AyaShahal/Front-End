@@ -12,7 +12,7 @@
   
   .nav-link {
     display: flex;
-    gap: 60px;
+    gap: 50px;
     margin-left: 50px;
     width: fit-content; 
     align-items: center;
@@ -21,12 +21,12 @@
   .nav-link .links{
     text-decoration: none;
     /* color: var(--primary-color); */
-    color:#9DAFBD;
+    color:black;
     font-size: 16px;
 }
 
 .nav-link .links.active{
-     color: var(--primary-color);
+     color: var(--button);
 }
   .auth-buttons {
     display: flex;
@@ -36,8 +36,12 @@
   }
   .auth-buttons .links{
     text-decoration: none;
-    color: var(--primary-color);
+    color: black;
     font-size: 16px;
+
+  }
+  .auth-buttons .links.active{
+  color:var(--button);
   }
   .button {
     margin-left: 10px;
