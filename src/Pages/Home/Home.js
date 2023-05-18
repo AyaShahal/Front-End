@@ -3,6 +3,7 @@ import Hero from '../../Component/Home-hero-section/hero';
 import Ambition from '../../Component/Ambition-section/Ambition';
 import Problem from '../../Component/Problem-section/Problem';
 import Solution from '../../Component/Solution-section/Solution';
+import ContactUs from '../../Component/ContactUs-section/ContactUs';
 function Home() {
     return (
         <div>
@@ -10,6 +11,7 @@ function Home() {
         <Ambition/>
         <Problem/>
         <Solution/>
+        {/* <ContactUs/> */}
         </div>
     );
 }

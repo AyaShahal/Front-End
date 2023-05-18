@@ -10,6 +10,7 @@ import Food from './Pages/Food/Food';
 import NotFound from './Pages/404 /404';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup'
+import Contact from './Pages/ContactUs/Contact';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="Food" element={<Food />} />
         <Route path="Login" element={<Login />} />
         <Route path="Signup" element={<Signup />} />
+        <Route path="Contact Us" element={<Contact />} />
         <Route path="/404/*" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
