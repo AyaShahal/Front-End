@@ -1,9 +1,10 @@
 import React from 'react';
+import Surplus from '../../Component/SurplusFood/Food';
 
 function Food() {
     return (
         <div>
-            Food
+            <Surplus/>
         </div>
     );
 }
