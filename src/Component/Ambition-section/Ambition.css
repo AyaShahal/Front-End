@@ -17,15 +17,8 @@ color: #9DAFBD;
 text-align: center;
 margin: 0 auto;
 }
-.tgtg-stats-promo__icon[data-v-22839a02] {
-    height: 8.5rem;
-    margin-bottom: -2rem;
-    width: 8.5rem;
-}
-.card-space:hover .card {
-    transform: rotateY(-180deg);
-  }
-  
+
+
   .card {
     border-radius: 10px;
     height: 300px;
@@ -60,17 +53,11 @@ margin: 0 auto;
     transform: rotateY(0deg);
   }
   
-  .face.back {
-    transform: rotateY(180deg);
-    backface-visibility: hidden;
-  }
+  
   .card h1{
     font-size: 18px;
   }
-  .face.back p{
-    text-align: center;
-    padding: 10px;
-  }
+ 
   .Ambition-card{
     display: flex;
     justify-content: center;
