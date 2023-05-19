@@ -11,6 +11,7 @@ import NotFound from './Pages/404 /404';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup'
 import Contact from './Pages/ContactUs/Contact';
+import Profile from './Pages/User-Profile/User-Profile';
 
 function App() {
   return (
@@ -24,8 +25,9 @@ function App() {
         <Route path="Login" element={<Login />} />
         <Route path="Signup" element={<Signup />} />
         <Route path="Contact Us" element={<Contact />} />
+        <Route path="userProfile" element={< Profile/>} />
         <Route path="/404/*" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/404" replace />} />
+          <Route path="Profile*" element={<Navigate to="/404" replace />} />
       </Routes>
       <Footer />
     </BrowserRouter>
