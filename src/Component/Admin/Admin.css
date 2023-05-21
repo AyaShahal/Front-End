@@ -1,0 +1,24 @@
+.css-6linv0-MuiButtonBase-root-MuiMenuItem-root .MuiListItemIcon-root {
+  color: var(--primary-color);
+}
+
+.cancel {
+  background-color: white;
+  color: var(--primary-color);
+  border: none;
+
+  font-size: larger;
+}
+.cancel-button .cancel {
+  padding-right: 40px;
+}
+.post-btn-group {
+  padding-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.disabled {
+  color: gray;
+}
