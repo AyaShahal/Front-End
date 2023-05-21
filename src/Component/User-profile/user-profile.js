@@ -141,8 +141,8 @@ function User() {
                         &times;
                       </span>
                       <div className="title">
-                      <h1>Edit post</h1>
-                    </div>
+                        <h1>Edit post</h1>
+                      </div>
                       <form
                         className="profile-form"
                         onSubmit={handleFormSubmit}
@@ -215,7 +215,9 @@ function User() {
                             required={true}
                             onChange={handleInputChange}
                           >
-                            <option value="" style={{display:"none"}}>Select a category </option>
+                            <option value="" style={{ display: "none" }}>
+                              Select a category{" "}
+                            </option>
                             <option value="category1">
                               Fruits and Vegetables
                             </option>
@@ -227,18 +229,18 @@ function User() {
                           </select>
                         </div>
                         <div className="post-btn-group">
-                          <button type="submit" className="button">
-                            Add
-                          </button>
                           <div className="cancel-button">
                             <button
-                              type="submit"
-                              className="button"
+                              type="button"
+                              className="cancel"
                               onClick={closeModal}
                             >
                               Cancel
                             </button>
                           </div>
+                          <button type="submit" className="cancel">
+                            Add
+                          </button>
                         </div>
                       </form>
                     </div>
@@ -347,7 +349,9 @@ function User() {
                           required={true}
                           onChange={handleInputChange}
                         >
-                          <option value="" style={{display:"none"}}>Select a category</option>
+                          <option value="" style={{ display: "none" }}>
+                            Select a category
+                          </option>
                           <option value="category1">
                             Fruits and Vegetables
                           </option>
@@ -359,18 +363,18 @@ function User() {
                         </select>
                       </div>
                       <div className="post-btn-group">
-                        <button type="submit" className="button">
-                          Add
-                        </button>
                         <div className="cancel-button">
                           <button
                             type="submit"
-                            className="button"
+                            className="cancel"
                             onClick={handlecancelPost}
                           >
                             Cancel
                           </button>
                         </div>
+                        <button type="submit" className="cancel">
+                          Add
+                        </button>
                       </div>
                     </form>
                   </div>
@@ -449,15 +453,15 @@ function User() {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="btn-group">
-              <button type="submit" className="button">
-                Save
-              </button>
+            <div className="post-btn-group">
               <div className="cancel-button">
-                <button type="submit" className="button">
+                <button type="submit" className="cancel">
                   Cancel
                 </button>
               </div>
+              <button type="submit" className="cancel">
+                Save
+              </button>
             </div>
           </form>
         </div>

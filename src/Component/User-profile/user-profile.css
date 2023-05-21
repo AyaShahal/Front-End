@@ -227,15 +227,8 @@
   border-radius: 5px;
   margin-bottom: 12px;
 }
-.cancel-button .button {
-  background-color: var(--primary-color);
-}
 
-.btn-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
+
 .post-form-popup {
   display: flex;
   align-items: center;
@@ -291,6 +284,7 @@
   padding-bottom: 30px;
   font-size: 30px;
   text-align: start;
+  font-weight: 10;
 }
 .group {
   margin-bottom: 4px;
