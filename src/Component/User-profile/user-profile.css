@@ -340,8 +340,20 @@
     padding-bottom: 20px;
   } */
 
- 
-  
+  .modal2-content {
+    width: 100%;
+    padding: 25px;
+    height: auto;
+  }
+  .title h1{
+    font-size: 20px;
+    padding-bottom: 10px;
+  }
+  .profile-form input[type="text"], .profile-form input[type="email"], .profile-form input[type="password"], .profile-form input[type="number"], .profile-form input[type="file"], .profile-form input[type="Date"] {padding: 14px;
+  }
+  .post-btn-group{
+    padding-top: 10px;
+  }
   .main-bd {
     flex-direction: column;
     padding-right: 0;

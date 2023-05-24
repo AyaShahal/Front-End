@@ -137,7 +137,7 @@ function User() {
                 {isModalOpen && (
                   <div className="modal2">
                     <div className="modal2-content">
-                      <span className="close" onClick={closeModal}>
+                      <span className="close1" onClick={closeModal}>
                         &times;
                       </span>
                       <div className="title">
@@ -386,7 +386,7 @@ function User() {
       </div>
       <div className="modal2" style={{ display: isOpen ? "block" : "none" }}>
         <div className="modal2-content">
-          <span className="close" onClick={close}>
+          <span className="close1" onClick={close}>
             &times;
           </span>
           <div className="title">
