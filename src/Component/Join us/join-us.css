@@ -63,7 +63,7 @@
   
     .btn-primary {
       height: auto;
-      width: 200px;
+      /* width: 200px; */
       font-size: 16px;
       margin-top: 20px;
     }
