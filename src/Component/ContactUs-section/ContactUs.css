@@ -11,7 +11,8 @@
 .contact {
     background-color: #fff;
     position: relative;
-    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 5px 15px 0px #000007;
+
     border-radius: 5px;
     width: 894px;
     margin: 0 auto;
@@ -37,7 +38,6 @@
     border-bottom-right-radius: 5px;
   }
   .contact_us{
-      background-color:var(--button);
       padding: 120px 0px;
   }
   
@@ -91,7 +91,7 @@
       height: 340px;
       width: 340px;
       padding: 40px;
-      border-radius: 25px 0 0 25px;
+      border-radius: 25px 5px 5px 25px;
       color: white;
   }
   .contact_info_sec h4{
