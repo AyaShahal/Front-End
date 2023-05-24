@@ -1,116 +1,134 @@
-import React, { useState } from "react";
+import React, {  useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { UserContext } from "../UserProvider";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
 import "./Signin.css";
 
 function Signin() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [errors, setErrors] = useState({});
-    const [formData, setFormData] = useState({
-      username: "",
-      email: "",
-      password: "",
-      phone: "",
-      Address: "",
-    });
+  const Navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { loginUser } = useContext(UserContext);
+ 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
   
-    const handleTogglePassword = () => {
-      setShowPassword(!showPassword);
-    };
-    const [userType, setUserType] = useState('');
+    try {
+      const response = await loginUser(email, password);
+      console.log("Response:", response);
   
-    const handleUserTypeChange = (event) => {
-      setUserType(event.target.value);
-    };
-    const validate = () => {
-      let errors = {};
-      
-            
-                if (!formData.email.trim()) {
-                  errors.email = "Email is required";
-                } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-                  errors.email = "Email is invalid";
-                }
-            
-                if (!formData.password.trim()) {
-                  errors.password = "Password is required";
-                } else if (formData.password.trim().length < 6) {
-                  errors.password = "Password must be at least 6 characters";
-                }
-            
-            
-          
+      if (response) {
+        const { role } = response.user;
   
-      setErrors(errors);
-      return Object.keys(errors).length === 0;
-    };
+        // Check the role of the user
+        if (role === 'Business') {
+          const token = response.user.token;
+          Cookies.set("jwt", token);
+          const cookieValue = Cookies.get("jwt");
+          console.log("Cookie value:", cookieValue);
+          Navigate("/userProfile"); 
+        } else {
+          Navigate("/Food"); 
+        }
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        const errorMessage = error.response.data.message;
+        console.log("Login error:", errorMessage);
+        setError(errorMessage);
+      } else {
+        console.log("An error occurred during login:", error.message);
+        setError("An error occurred during login");
+      }
+    }
   
-    return (
-        <div className="signup">
-        <div className="section1">
-          <h1>Login </h1>
-          <p>
-            Join the movement to fight food waste and hunger. Login now and make
-            a difference.
-          </p>
-        </div>
-        <div className="section3">
-          <form className="register-inputs">
-        
-          <div className="login-section">
-          <div className="input-group">
-            <input
-              className="input"
-              type="email"
-              name="email"
-              required={true}
-              // value={formData.email}
-              // onChange={handleChange}
-              // autoComplete="username"
-            />
-            <label htmlFor="email" className="input-label">
-              Email
-            </label>
-            {errors.email && <p className="error">{errors.email}</p>}
-          </div>
+    setLoading(false);
+  };
   
-          <div className="input-group">
-            <input
-              className="input"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              required={true}
-              // value={formData.password}
-              // onChange={handleChange}
-              autoComplete="current-password"
-            />
-            <label htmlFor="password" className="input-label">
-              Password
-            </label>
-            <FontAwesomeIcon
-              icon={faEye}
-              className="showing-password"
-              onClick={handleTogglePassword}
-            />
-            {errors.password && <p className="error">{errors.password}</p>}
-          </div>
-          <div className="forgot-password">
-          <NavLink to="/">Forgot password?</NavLink>
-          </div>
-        </div>
-            
-        
-  
-  
-          </form>
-  
-          <div className="register-buttons">
-            <button type="submit">Login</button>
-          </div>
-        </div>
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+
+ 
+
+  return (
+    <div className="signup">
+      <div className="section1">
+        <h1>Login </h1>
+        <p>
+          Join the movement to fight food waste and hunger. Login now and make a
+          difference.
+        </p>
       </div>
-    );
+      <div className="section3">
+        <form className="register-inputs" onSubmit={handleLogin}>
+          <div className="login-section">
+            <div className="input-group">
+            {errors.email && <p className="error">{errors.email}</p>}
+              <input
+                className="input"
+                type="email"
+                name="email"
+                required={true}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+              />
+              <label htmlFor="email" className="input-label">
+                Email
+              </label>
+             
+            </div>
+
+            <div className="input-group">
+            {errors.password && <p className="error">{errors.password}</p>}
+              <input
+                className="input"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                required={true}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+              <label htmlFor="password" className="input-label">
+                Password
+              </label>
+              <FontAwesomeIcon
+                icon={faEye}
+                className="showing-password"
+                onClick={handleTogglePassword}
+              />
+             
+            </div>
+            <div className="forgot-password">
+              <NavLink to="/">Forgot password?</NavLink>
+            </div>
+            <div className="register-buttons">
+          <button type="submit" disabled={loading}> {loading ? "Logging in..." : "Login"}</button>
+         
+        </div>
+          </div>
+         
+        </form>
+
+       
+      </div>
+    </div>
+  );
 }
 
 export default Signin;
