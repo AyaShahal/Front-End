@@ -64,3 +64,72 @@
 .slick-dots li.slick-active button:before {
   background-color: var(--button);
 }
+
+@media screen and (max-width: 998px) {
+  .about-content .circle-image {
+  /* height: 350px; */
+  margin: 0 auto;
+}
+.about-section {
+  flex-direction: column;
+  height: auto;
+  padding: 50px 20px;
+  text-align: center;
+
+}
+.about-title {
+ 
+  text-align: center;
+  margin: 0 auto;
+}
+
+.about-section p {
+  max-width: 600px !important;
+  margin: 0 auto;
+  text-align: center;
+}
+
+}
+@media screen and (max-width: 668px) {
+  .about-section {
+    flex-direction: column;
+    height: auto;
+    padding: 50px 20px;
+    text-align: center;
+
+  }
+
+  .about-section h1,
+  .about-section h6 {
+    width: 100%;
+    font-size: 36px;
+  }
+
+  .about-section p {
+    width: 100%;
+  }
+
+
+    .about-content .circle-image {
+      width: 200px;
+      max-height: 200px;
+      margin-top: 30px;
+      margin: 0 auto;
+    }
+  
+  .slick-dots {
+    position: static;
+    margin-top: 20px;
+  }
+  
+  .slick-dots li {
+    margin: 0 5px;
+  }
+  .about-content{
+    width: 500px;
+    margin: 0 auto;
+  }
+.about-image{
+  height: 250px;
+}
+}

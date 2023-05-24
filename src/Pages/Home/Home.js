@@ -10,8 +10,8 @@ function Home() {
         <Hero/>
         <Ambition/>
         <Problem/>
-        <Solution/>
-        {/* <ContactUs/> */}
+        <Solution/> 
+    
         </div>
     );
 }

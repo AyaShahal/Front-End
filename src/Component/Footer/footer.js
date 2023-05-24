@@ -25,7 +25,7 @@ function Footer() {
         <div className="footer-section">
         <div className="footer-container1">
           <h3>PRODUCTS</h3>
-          <NavLink to="/Food " className="links">Surplus Food Posting </NavLink>
+          <NavLink to="/Food " className="links">Surplus Food  </NavLink>
           <NavLink to="/Food" className="links"> Food Search  </NavLink>
           <NavLink to="/Food"  className="links">Analytics </NavLink>
         </div>
@@ -36,9 +36,9 @@ function Footer() {
           <NavLink to="/Contact" className="links">Our Value</NavLink>
         </div>
         <div className="footer-container1   _location__box">
-        <h3>Food Waste Reduction Platform</h3>
+        <h3>Surplus Savior</h3>
       <p>Contact Information:</p>
-      <p>Email: <a href="mailto:shop@gmail.com"> info@foodwastereduction.com</a></p>
+      <p>Email: <a href="mailto:shop@gmail.com"> info@SurplusSavior.com</a></p>
       <p>
       Phone: <a href="tel:456-789"> (961) 456-789</a></p>
         </div>

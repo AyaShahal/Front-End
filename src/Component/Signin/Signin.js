@@ -47,7 +47,7 @@ function Signin() {
     };
   
     return (
-        <div className="signupForm">
+        <div className="signup">
         <div className="section1">
           <h1>Login </h1>
           <p>

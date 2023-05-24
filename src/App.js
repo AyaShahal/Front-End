@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        {/* <Header /> */}
+        <Header />
         <Routes>
           <Route path="" element={<Home />} />
           <Route path="About" element={<About />} />
@@ -33,7 +33,7 @@ function App() {
           <Route path="/404/*" element={<NotFound />} />
           <Route path="Profile" element={<Navigate to="/404" replace />} />
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
         <Routes>
           <Route path="/Dashboard" element={<Dashboard />}>
             <Route path="/Dashboard/Product" element={<Product />} />

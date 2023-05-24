@@ -39,3 +39,32 @@
     align-items: center;
     margin: 0 auto;
 }
+
+@media screen and (max-width: 768px) {
+    .join {
+      height: auto;
+      padding: 40px;
+    }
+  
+    .join h1 {
+      font-size: 64px;
+      padding: 10px;
+    }
+  
+    .join p {
+      width: 100%;
+      padding: 20px;
+      font-size: 16px;
+    }
+  
+    .join span {
+      padding: 20px;
+    }
+  
+    .btn-primary {
+      height: auto;
+      width: 200px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  }

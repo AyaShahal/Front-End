@@ -4,7 +4,7 @@ import "./Food.css";
 
 function Surplus() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [selectedCategory, setSelectedCategory] = useState("");
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -12,7 +12,10 @@ function Surplus() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
+  const handleCategoryChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedCategory(selectedValue);
+  };
   return (
     <div>
       <div className="wrapper">
@@ -26,6 +29,19 @@ function Surplus() {
             <NavLink to="/Product">Prepared Meals</NavLink>
           </nav>
         </div>
+        <div className="Categories-dropdown">
+            <select
+              id="categorySelect"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="">All Products</option>
+              <option value="Homemade">Homemade</option>
+              <option value="Recycling">Recycling</option>
+              <option value="Hygienic">Hygienic</option>
+            </select>
+          </div>
+
         <div className="cards">
           <div className="card1">
             <div className="card__image">
@@ -126,6 +142,9 @@ function Surplus() {
         {isModalOpen && (
           <div className="modal">
             <div className="modal-content">
+            <span className="close1" onClick={closeModal}>
+                &times;
+              </span>
               <div className="card2__image">
                 <img
                   src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"

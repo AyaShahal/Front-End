@@ -139,3 +139,26 @@
   .contact_form_submit:hover{
     background-color: var(--primary-color);
   }
+  @media screen and (max-width: 768px) {
+    .contact_field {
+      padding: 10% 5% 15% 5%;
+    }
+  
+    .contact_info_sec {
+     display: none;
+    }
+    .row1 {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+    }
+    
+    .contact{
+        width: 100%;
+     
+    }
+    .right_conatct_social_icon{
+        display: none;
+    }
+}
+  

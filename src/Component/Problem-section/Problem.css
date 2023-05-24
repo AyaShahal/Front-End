@@ -27,7 +27,7 @@
 .aboutAuthor .K2_bio h2 {
   margin: 0px !important;
   padding-top: 20px;
-  color: white;
+  color:var(--button);
   text-align: start;
   font-size: 14px;
 }
@@ -95,5 +95,56 @@
 }
 .K3_bio span {
   font-size: 34px;
-  color: white;
+  color: var(--button);
+  font-weight: bold;
+}
+
+.problem-card{
+  display:flex;
+}
+
+
+@media (max-width: 768px) {
+  .aboutAuthor .K2_bio {
+    padding: 20px;
+    height: auto;
+  }
+
+  .aboutAuthor .K2_bio h2 {
+    font-size: 12px;
+  }
+
+  .aboutAuthor .K2_bio p {
+    font-size: 12px;
+    text-align: start;
+  }
+
+  .k2About-bt {
+    width: 80px;
+    height: 24px;
+    padding: 0 8px;
+    line-height: 1.5em;
+    font-size: 12px;
+  }
+
+  .problem-text h1 {
+    font-size: 24px;
+    padding: 10px;
+  }
+
+  .problem-text p {
+    padding: 10px;
+    font-size: 12px;
+    width: auto;
+  }
+
+  .problem-section {
+    min-height: auto;
+    height: auto;
+    padding: 30px 0;
+  }
+
+  .K3_bio span {
+    font-size: 18px;
+  }
 }

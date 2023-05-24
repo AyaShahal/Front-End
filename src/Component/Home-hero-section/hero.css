@@ -55,12 +55,79 @@
   .hero {
     height: 100vh;
     position: relative;
-  
     background-image: linear-gradient(
       rgba(34, 34, 34, 0.6),
       rgba(34, 34, 34, 0.6)
     ), url("https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
     background-size: cover;
+    background-position: center;
     color: #fff;
   }
+  @media (min-width: 900px) and (max-width: 1200px) {
+    .header-container {
+      width: 80%;
+    }
   
+    .header-container-inner {
+      width: 100%;
+      padding-left: 20px;
+    }
+  
+    .header-container-inner h1 {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+  
+    .header-container-inner p {
+      font-size: 18px;
+      margin-bottom: 24px;
+      display: none;
+    }
+  
+    .btn {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  
+    h2 {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero {
+      height: auto;
+      min-height: 400px;
+      padding: 50px 0;
+      background-position: top;
+    }
+    .header-container-inner{
+      padding-left: 20px;
+    }
+    .header-container{
+      width: 100%;
+    }
+    .header-container-inner h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+  
+    .header-container-inner p {
+      font-size: 16px;
+      margin-bottom: 24px;
+      display: none;
+    }
+  
+    .btn {
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+  
+   
+  }

@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./About-hero.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { NavLink } from "react-router-dom";
+
 function Abouthero() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 998);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   const settings = {
     dots: true,
     infinite: true,
@@ -16,14 +32,19 @@ function Abouthero() {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
   };
   return (
     <div>
-      <img src="https://cdnimg.webstaurantstore.com/images/articles/140/reducefoodwaste_header.jpg" width="100%"/>
+      <img
+        className="about-image"
+        src="https://cdnimg.webstaurantstore.com/images/articles/140/reducefoodwaste_header.jpg"
+        width="100%"
+      />
 
       <div className="about-section">
         <div className="about-title">
@@ -34,7 +55,7 @@ function Abouthero() {
             platform to showcase and donate their surplus food
           </p>
         </div>
-        <Slider {...settings} style={{ width: "30%" }}>
+        <Slider {...settings} style={{ width: isMobile ? "100%" : "30%" }}>
           <div className="about-content">
             <img
               src="https://img.freepik.com/free-photo/female-chef-kitchen-preparing-plate-steak_23-2149720770.jpg?t=st=1684177048~exp=1684177648~hmac=2955dd242f90bf8f09cd6259dc42098f7be325dd7f9b573d9b7cea60c20d3ea9"

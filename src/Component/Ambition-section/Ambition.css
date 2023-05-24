@@ -70,4 +70,74 @@ margin: 0 auto;
   text-align: center;
   padding: 20px;
   }
+
+@media (max-width: 1001px) {
+  .Ambition-section{
+    padding: 10px;
+  }
+  .Ambition-card {
+    flex-direction: row;
+  }
+
+  .Ambition-title h1 {
+    font-size: 54px;
+    padding: 50px;
+  }
+
+  .Ambition-text p {
+    height: 59px;
+    width: auto;
+    color: #9dafbd;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .K3_bio span{
+    padding-top: 20px;
  
+  }
+  .card {
+    width: 226px;
+  }
+
+  .card h1 {
+    font-size: 18px;
+  }
+
+  .face.front p {
+    font-size: 14px;
+    padding: 20px;
+  }
+}
+  @media (max-width: 768px) {
+    .Ambition-section {
+      padding: 10px;
+      padding-top: 20px;
+    }
+    .Ambition-card{
+      flex-direction: column;
+    }
+    .Ambition-title h1 {
+      font-size: 24px;
+      padding: 10px;
+    }
+    
+    .Ambition-text p {
+      font-size: 12px;
+      padding: 10px;
+      width: auto;
+      height: auto;
+      margin: 0 auto;
+    }
+   
+   .card{
+    width: auto;
+   }
+    .card h1 {
+      font-size: 14px;
+    }
+    
+    .face.front p {
+      font-size: 12px;
+      padding: 10px;
+    }
+  }

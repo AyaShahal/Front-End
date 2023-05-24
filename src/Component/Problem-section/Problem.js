@@ -10,6 +10,7 @@ function Problem() {
         is discarded or wasted instead of being consumed
       </p>
       </div>
+      {/* <div className="problem-card"> */}
       <div class="aboutAuthor">
         <div class="K2_bio">
           <div className="K3_bio">
@@ -25,9 +26,9 @@ function Problem() {
             emissions, wasting valuable resources, and exacerbating the global
             food crisis
           </p>
-          <div class="h-divider">
+          {/* <div class="h-divider">
             <div class="shadow"></div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div class="aboutAuthor">
@@ -46,11 +47,12 @@ function Problem() {
             goes to waste require significant amounts of water, energy, and
             other resources, putting further strain on the environment.
           </p>
-          <div class="h-divider">
+          {/* <div class="h-divider">
             <div class="shadow"></div>
-          </div>
+          </div> */}
         </div>
       </div>
+      
       <div class="aboutAuthor">
         <div class="K2_bio">
           <div className="K3_bio">
@@ -67,11 +69,12 @@ function Problem() {
             the divide between those with access to an abundance of food and
             those struggling to meet their basic nutritional needs.
           </p>
-          <div class="h-divider">
+          {/* <div class="h-divider">
             <div class="shadow"></div>
-          </div>
+          </div> */}
         </div>
       </div>
+      {/* </div> */}
     </div>
   );
 }
