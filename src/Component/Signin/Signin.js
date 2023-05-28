@@ -24,7 +24,6 @@ function Signin() {
     try {
       const response = await loginUser(email, password);
       console.log("Response:", response);
-  
       if (response) {
         const { role } = response.user;
   
@@ -76,8 +75,9 @@ function Signin() {
       <div className="section3">
         <form className="register-inputs" onSubmit={handleLogin}>
           <div className="login-section">
+          {error && <div className="error-message">{error} !</div>}
             <div className="input-group">
-            {errors.email && <p className="error">{errors.email}</p>}
+           
               <input
                 className="input"
                 type="email"

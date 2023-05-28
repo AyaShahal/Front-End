@@ -11,3 +11,8 @@
 .forgot-password a{
     color: var(--primary-color);
 }
+.error-message{
+    color: red;
+      font-size: medium;
+      margin-bottom: 20px;
+    }
