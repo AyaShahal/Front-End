@@ -6,6 +6,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState([]);
   const [userId, setUserId] = useState(null);
+  const context = useContext(UserContext)
   const registerUser = async (userData) => {
     try {
       const response = await axios.post(
@@ -20,10 +21,40 @@ export const UserProvider = ({ children }) => {
       console.log(error);
     }
   };
-  const loginUser = async (email, password) => {
+ const loginUser = async (email, password) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:7000/api/user/login",
+      { email, password },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const userResponse = response.data;
+
+    // Save the response data in local storage
+    localStorage.setItem("userResponse", JSON.stringify(userResponse));
+
+    setUser(userResponse);
+
+    return userResponse;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+  const logoutUser = () => {
+    setUser(null);
+  };
+  const loginAdmin = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/user/login",
+        "http://localhost:7000/api/admin/login",
         { email, password },
         {
           withCredentials: true,
@@ -33,25 +64,19 @@ export const UserProvider = ({ children }) => {
         }
       );
 
-      const userIdValue = response.data.user.id;
+      const adminResponse = response.data;
 
-      // Save the user ID in local storage
-      localStorage.setItem("userId", userIdValue);
+     
+      localStorage.setItem("adminResponse", JSON.stringify(adminResponse));
 
-      console.log("Response:", response.data);
-      console.log("User ID:", userIdValue);
+      setUser(adminResponse);
 
-      return response.data;
+      return adminResponse;
     } catch (error) {
       console.log(error);
       throw error;
     }
   };
-
-  const logoutUser = () => {
-    setUser(null);
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -60,6 +85,7 @@ export const UserProvider = ({ children }) => {
         registerUser: registerUser,
         loginUser: loginUser,
         logoutUser: logoutUser,
+        loginAdmin: loginAdmin,
       }}
     >
       {children}
