@@ -5,9 +5,9 @@ import { BiCategory } from "react-icons/bi";
 import { RiAdminFill } from "react-icons/ri";
 import { FaUsers } from 'react-icons/fa';
 import { FaProductHunt } from "react-icons/fa";
-import { MdRateReview, MdOutlineLogout, MdDescription } from "react-icons/md";
+import { MdOutlineLogout} from "react-icons/md";
 import logo from "../Savior-removebg-preview.png";
-
+import Cookies from 'js-cookie';
 const activeStyle = {
   backgroundColor: "var(--primary-color)",
   color: "#fff",
@@ -41,11 +41,18 @@ function Sidebar() {
       icon: <FaUsers />,
     },
   ];
-
+  const handleLogout = () => {
+    Cookies.remove("jwt");
+    localStorage.clear("adminResponse");
+  };
+  
   return (
     <div className="sidebar">
       <div className="sidebar-main">
-        <img src={logo} alt="" height="100px" width="100px" />
+      <div className="logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  <img src={logo} alt="" height="100px" width="100px" />
+</div>
+
         {link.map((e, index) => {
           return (
             <ul key={index}>
@@ -68,7 +75,7 @@ function Sidebar() {
 
       <ul className="sidebar-end">
         <li>
-          <Link to="#">
+          <Link to="" onClick={handleLogout}>
             <MdOutlineLogout />
             Logout
           </Link>
