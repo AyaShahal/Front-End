@@ -1,1 +1,35 @@
-rsf
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+  }
+  
+  .not-found-title {
+    font-size: 9rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    color: var(--button);
+    border-bottom: solid 2px #f0ebeb ;
+   
+  }
+  
+  .not-found-text {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: var(--button);
+  }
+ 
+  .not-found-link {
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--button);
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin-top: 30px;
+  }
+  
+ 
