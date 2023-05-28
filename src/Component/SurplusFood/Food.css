@@ -16,17 +16,17 @@
   margin: auto;
   margin-top: 0.5em;
 }
-
 .cards {
   width: 1450px;
   margin-top: 6em;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   margin: 0 auto;
   gap: 30px;
   overflow: auto;
   grid-template-rows: auto;
 }
+
 
 .card1 {
   width: 330px;
@@ -64,6 +64,7 @@
 .card__info p {
   font-size: 14px;
   font-weight: 600;
+  width: 120px;
   color: var();
 }
 
@@ -213,6 +214,9 @@
   }
 }
 @media screen and (max-width: 668px) {
+  .wrapper{
+    padding: 30px;
+  }
   .head-title {
     font-size: 30px;
   }
