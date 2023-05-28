@@ -6,6 +6,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Cookies from 'js-cookie';
 import {
   Box,
   Button,
@@ -26,9 +27,7 @@ function Admin() {
   const close = () => {
     setOpen(false);
   };
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDVkZGIwZTc3MWNlZWY3ZThjMjM0ZWYiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE2ODQ2NjM4NzcsImV4cCI6MTY4NDY3MTA3N30.H2hlaoJWYA_3QNc7pwO7zIOpuhg_OmEgEMyF6uHo_Qg";
-
+  const token = Cookies.get('jwt');
   useEffect(() => {
     fetchData();
   }, []);
@@ -214,7 +213,7 @@ function Admin() {
               <div className="title">
                 <h1>Add Admin</h1>
               </div>
-              <form className="register-inputs" onSubmit={handleSubmit}>
+              <form className="register-inputs add-admin" onSubmit={handleSubmit}>
                 <div className="input-group">
                   <input
                     className="input"
