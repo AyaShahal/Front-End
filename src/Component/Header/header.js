@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,14 +7,32 @@ import {
   faBars,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+import { MdOutlineLogout} from "react-icons/md";
 import "./header.css";
 import logo from "../Savior-removebg-preview.png";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
 
 function Header() {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [userName, setUserName] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [Open, setOpen] = useState(false);
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userResponse");
+    const token = Cookies.get("jwt");
+  
+    if (storedUser && token) {
+      const parsedUser = JSON.parse(storedUser);
+      const userFullName = `${parsedUser.user.username}`;
+      setUserName(userFullName);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
   function toggleSelector() {
     setIsSelectorOpen(!isSelectorOpen);
   }
@@ -30,76 +48,104 @@ function Header() {
   const handleLinkClick = () => {
     setIsOpen(false);
   };
+  const handleLogout = () => {
+    Cookies.remove("jwt");
+    setIsLoggedIn(false);
+    localStorage.clear("userResponse");
+  };
+  
+  
+
+
+  const handleClick = () => {
+    setOpen(!Open);
+  };
+const close=()=>{
+  setOpen(false);
+}
 
   return (
     <header>
-      
       <div className="navbar">
-    
         <nav>
-        
           <div className="nav-link">
-          <div className="toogle">
-        <button className="menu-toggle" onClick={handleMenuClick}>
-              {isOpen ? (
-                <FontAwesomeIcon icon={faTimes} className="menu-icon" />
-              ) : (
-                <FontAwesomeIcon icon={faBars} className="menu-icon" />
-              )}
-            </button>
+            <div className="toogle">
+              <button className="menu-toggle" onClick={handleMenuClick}>
+                {isOpen ? (
+                  <FontAwesomeIcon icon={faTimes} className="menu-icon" />
+                ) : (
+                  <FontAwesomeIcon icon={faBars} className="menu-icon" />
+                )}
+              </button>
             </div>
             <img src={logo} alt="" height="100px" width="100px" />
             <div className="link">
-            <NavLink to="/" className="links">
-              Home
-            </NavLink>
-            <NavLink to="/About" className="links">
-              About
-            </NavLink>
-            <NavLink to="/Food" className="links">
-              Surplus Food
-            </NavLink>
-            <NavLink to="/Contact Us" className="links">
-              Contact Us
-            </NavLink>
+              <NavLink to="/" className="links">
+                Home
+              </NavLink>
+              <NavLink to="/About" className="links">
+                About
+              </NavLink>
+              <NavLink to="/Food" className="links">
+                Surplus Food
+              </NavLink>
+              <NavLink to="/Contact Us" className="links">
+                Contact Us
+              </NavLink>
             </div>
           </div>
-          
         </nav>
         <div className="auth-buttons">
-          <NavLink to="/Login" className="links">
-            Login
+  {isLoggedIn ? (
+    <div className="user-profile" onClick={toggleSelector}>
+      <div className="user">
+        <div className="user-name">{userName}</div>
+        <FontAwesomeIcon icon={faCaretDown} />
+      </div>
+      {isSelectorOpen && (
+        <div className="selector-content">
+          <div className="settings">
+          <NavLink
+            to="/userProfile"
+            className="selector-link"
+            onClick={closeToggle}
+          >     <FontAwesomeIcon icon={faUser} />
+            View Profile
           </NavLink>
-          <NavLink to="/Signup" className="button">
-            Sign Up
+          </div>
+          <div className="settings">
+          <NavLink to="/" className="selector-link" onClick={handleLogout}>    <MdOutlineLogout />
+            Logout
           </NavLink>
-          <div className="user-profile">
-            <div className="user">
-              <FontAwesomeIcon icon={faUser} />
-              <div className="profile-selector" onClick={toggleSelector}>
-                <FontAwesomeIcon icon={faCaretDown} />
-              </div>
-            </div>
-            {isSelectorOpen && (
-              <div className="selector-content">
-                <NavLink
-                  to="/userProfile"
-                  className="selector-link"
-                  onClick={closeToggle}
-                >
-                  View Profile
-                </NavLink>
-                <NavLink
-                  to="/Logout"
-                  className="selector-link"
-                  onClick={closeToggle}
-                >
-                  Logout
-                </NavLink>
-              </div>
-            )}
           </div>
         </div>
+      )}
+    </div>
+  ) : (
+    <>
+    <div className="dropdown">
+      <div className="dropdown-toggle" onClick={handleClick}>
+        Login
+      </div>
+      {Open && (
+        <div className="dropdown-menu">
+          <NavLink to="/login" className="links"   onClick={close}>
+            User 
+          </NavLink>
+          <NavLink to="/adminLogin" className="links" onClick={close}>
+            Admin 
+          </NavLink>
+        </div>
+      )}
+    </div>
+   
+      <NavLink to="/Signup" className="button">
+        Sign Up
+      </NavLink>
+    </>
+  )}
+</div>
+
 
         {isOpen && (
           <div className="mobile-menu__items">
