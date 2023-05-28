@@ -16,34 +16,62 @@ import Admin from "./Component/Admin/Admin";
 import Users from "./Component/Users/User";
 import Product from "./Component/Product/Product";
 import Category from "./Component/Category/Category";
-
+import Sidebar from "./Component/Sidebar/Sidebar";
+import {PrivateRoutes ,AdminRoutes} from "./utils/PrivateRoute";
+import Adminlogin from "./Pages/Admin-login/admin-login";
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
         <Routes>
-          <Route path="" element={<Home />} />
-          <Route path="About" element={<About />} />
-          <Route path="Food" element={<Food />} />
-          <Route path="Login" element={<Login />} />
-          <Route path="Signup" element={<Signup />} />
-          <Route path="Contact Us" element={<Contact />} />
-          <Route path="userProfile" element={<Profile />} />
+          <Route path="/Dashboard/*" element={<DashboardLayout />} />
+          <Route path="/*" element={<DefaultLayout />} />
           <Route path="/404/*" element={<NotFound />} />
-          <Route path="Profile" element={<Navigate to="/404" replace />} />
-        </Routes>
-        <Footer />
-        <Routes>
-          <Route path="/Dashboard" element={<Dashboard />}>
-            <Route path="/Dashboard/Product" element={<Product />} />
-            <Route path="/Dashboard/Categories" element={<Category />} />
-            <Route path="/Dashboard/User" element={<Users />} />
-            <Route path="/Dashboard/Admin" element={<Admin />} />
-          </Route>
         </Routes>
       </BrowserRouter>
     </div>
+  );
+}
+function DefaultLayout() {
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Food" element={<Food />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/AdminLogin" element={<Adminlogin />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Contact Us" element={<Contact />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/UserProfile" element={<Profile />} />
+        </Route>
+        <Route path="/*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
+function DashboardLayout() {
+  return (
+
+    <div className="layout">
+      <Sidebar />
+      <div className="content">
+        <Routes>
+        <Route element={< AdminRoutes/>}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/Product" element={<Product />} />
+          <Route path="/Categories" element={<Category />} />
+          <Route path="/User" element={<Users />} />
+          <Route path="/Admin" element={<Admin />} />
+          </Route>
+        </Routes>
+      </div>
+    </div>
+ 
   );
 }
 
