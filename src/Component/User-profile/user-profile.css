@@ -106,7 +106,7 @@
   width: 1000px;
   margin-top: 6em;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-template-columns: repeat(3, 1fr); 
   margin: 0 auto;
   gap: 10px;
   overflow: auto;
@@ -227,7 +227,9 @@
   border-radius: 5px;
   margin-bottom: 12px;
 }
-
+.add-post{
+  padding: 0;
+}
 
 .post-form-popup {
   display: flex;
