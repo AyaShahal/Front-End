@@ -86,7 +86,7 @@ function User() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:7000/api/category");
+      const response = await axios.get("https://surplus-app-api.onrender.com/api/category");
       const categories = response.data;
       setCategories(categories);
       console.log(categories);
@@ -116,7 +116,7 @@ function User() {
       };
 
       const response = await axios.put(
-        `http://localhost:7000/api/user/edit/${id}`,
+        `https://surplus-app-api.onrender.com/api/user/edit/${id}`,
         {
           email: formValues.email,
           username: formValues.username,
@@ -227,7 +227,7 @@ function User() {
       formData.append("User", id);
 
       const response = await axios.post(
-        "http://localhost:7000/api/Food",
+        "https://surplus-app-api.onrender.com/api/Food",
         formData,
         { headers }
       );
@@ -298,7 +298,7 @@ function User() {
           };
 
           const response = await axios.patch(
-            `http://localhost:7000/api/Food/${postId}`,
+            `https://surplus-app-api.onrender.com/api/Food/${postId}`,
             formData,
             { headers }
           );
@@ -344,7 +344,7 @@ function User() {
           Authorization: `Bearer ${token}`,
         };
 
-        await axios.delete(`http://localhost:7000/api/Food/${postId}`, {
+        await axios.delete(`https://surplus-app-api.onrender.com/api/Food/${postId}`, {
           headers,
         });
 
@@ -424,7 +424,7 @@ function User() {
                   <div className="post" key={index}>
                     <div className="post__image">
                       <img
-                        src={"http://localhost:7000/" + post.image}
+                        src={"https://surplus-app-api.onrender.com/" + post.image}
                         alt={post.name}
                       />
                     </div>
