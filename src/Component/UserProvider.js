@@ -62,7 +62,6 @@ export const UserProvider = ({ children }) => {
         "https://surplus-app-api.onrender.com/api/admin/login",
         { email, password },
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
