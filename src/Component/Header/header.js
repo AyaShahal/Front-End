@@ -17,22 +17,31 @@ function Header() {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [organizationName, setOrganizationName]=useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [Open, setOpen] = useState(false);
-  
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+const iconToShow = 
   useEffect(() => {
     const storedUser = localStorage.getItem("userResponse");
+    const storedOrganization = localStorage.getItem("organizationResponse");
     const token = Cookies.get("jwt");
-  
+  const auth = Cookies.get("auth");
     if (storedUser && token) {
       const parsedUser = JSON.parse(storedUser);
       const userFullName = `${parsedUser.user.username}`;
       setUserName(userFullName);
       setIsLoggedIn(true);
+    } else if (storedOrganization && auth) {
+      const parsedOrganization = JSON.parse(storedOrganization);
+      const organizationName = `${parsedOrganization.user.username}`;
+      setOrganizationName(organizationName);
+      setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
   }, []);
+  
   function toggleSelector() {
     setIsSelectorOpen(!isSelectorOpen);
   }
@@ -54,6 +63,11 @@ function Header() {
     localStorage.clear("userResponse");
   };
   
+  const handleOrganizationLogout = () => {
+    Cookies.remove("auth");
+    setIsLoggedIn(false);
+    localStorage.clear("organizationResponse");
+  };
   
 
 
@@ -96,32 +110,53 @@ const close=()=>{
           </div>
         </nav>
         <div className="auth-buttons">
-  {isLoggedIn ? (
-    <div className="user-profile" onClick={toggleSelector}>
-      <div className="user">
-        <div className="user-name">{userName}</div>
-        <FontAwesomeIcon icon={faCaretDown} />
-      </div>
-      {isSelectorOpen && (
-        <div className="selector-content">
-          <div className="settings">
-          <NavLink
-            to="/userProfile"
-            className="selector-link"
-            onClick={closeToggle}
-          >     <FontAwesomeIcon icon={faUser} />
-            View Profile
-          </NavLink>
-          </div>
-          <div className="settings">
-          <NavLink to="/" className="selector-link" onClick={handleLogout}>    <MdOutlineLogout />
-            Logout
-          </NavLink>
-          </div>
+        {isLoggedIn ? (
+  <>
+    {organizationName !== "Organization" ? (
+      <div className="user-profile" onClick={toggleSelector}>
+        <div className="user">
+          <div className="user-name">{userName}</div>
+          <FontAwesomeIcon icon={faCaretDown} />
         </div>
-      )}
-    </div>
-  ) : (
+        {isSelectorOpen && (
+          <div className="selector-content">
+            <div className="settings">
+              <NavLink
+                to="/userProfile"
+                className="selector-link"
+                onClick={closeToggle}
+              >
+                <FontAwesomeIcon icon={faUser} />
+                View Profile
+              </NavLink>
+            </div>
+            <div className="settings">
+              <NavLink to="/" className="selector-link" onClick={handleLogout}>
+                <MdOutlineLogout />
+                Logout
+              </NavLink>
+            </div>
+          </div>
+        )}
+      </div>
+    ) : (
+      <div className="user" onClick={toggleSelector}>
+        <div className="user-name">{organizationName}</div>
+        <FontAwesomeIcon icon={faCaretDown} />
+        {isSelectorOpen && (
+          <div className="selector-content">
+            <div className="settings">
+              <NavLink to="/" className="selector-link" onClick={handleOrganizationLogout}>
+                <MdOutlineLogout />
+                Logout
+              </NavLink>
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+  </>
+) : (
     <>
     <div className="dropdown">
       <div className="dropdown-toggle" onClick={handleClick}>
@@ -182,11 +217,11 @@ const close=()=>{
                 Contact Us
               </NavLink>
               <NavLink
-                to="/Login"
+                to="/signup"
                 className="mobile-menu__item nav-link login"
                 onClick={handleLinkClick}
               >
-                Login
+                Signup
               </NavLink>
             </div>
           </div>
