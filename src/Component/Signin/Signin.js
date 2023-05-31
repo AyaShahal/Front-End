@@ -35,6 +35,8 @@ function Signin() {
           console.log("Cookie value:", cookieValue);
           Navigate("/userProfile"); 
         } else {
+          const token = response.user.token;
+          Cookies.set("auth", token);
           Navigate("/Food"); 
         }
       }
@@ -114,9 +116,9 @@ function Signin() {
               />
              
             </div>
-            <div className="forgot-password">
+            {/* <div className="forgot-password">
               <NavLink to="/">Forgot password?</NavLink>
-            </div>
+            </div> */}
             <div className="register-buttons">
           <button type="submit" disabled={loading}> {loading ? "Logging in..." : "Login"}</button>
          
