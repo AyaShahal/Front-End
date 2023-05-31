@@ -1,5 +1,6 @@
 import React from "react";
 import './join-us.css';
+import { Link } from "react-router-dom";
 function Join() {
   return (
     <div className="join">
@@ -12,7 +13,9 @@ function Join() {
         charitable organization committed to alleviating hunger, our platform
         provides the tools and resources to make a meaningful impact
       </p>
-      <button className="btn btn-primary">Join Now</button>
+      <Link to="/signup">
+  <button className="btn btn-primary">Join Now</button>
+</Link>
     </div>
   );
 }
