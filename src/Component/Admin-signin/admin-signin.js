@@ -34,16 +34,15 @@ function Adminsignin() {
           Cookies.set("jwt", token);
           const cookieValue = Cookies.get("jwt");
           console.log("Cookie value:", cookieValue);
-          Navigate("/Dashboard"); 
+          Navigate("/Dashboard/Admin"); 
         } 
       }
     } catch (error) {
       if (
         error.response &&
-        error.response.data &&
-        error.response.data.message
+        error.response.data 
       ) {
-        const errorMessage = error.response.data.message;
+        const errorMessage = error.response.data;
         console.log("Login error:", errorMessage);
         setError(errorMessage);
       } else {
