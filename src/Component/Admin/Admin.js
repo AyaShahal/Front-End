@@ -7,21 +7,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'js-cookie';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import Loader from "../Loader/loader";
 import "./Admin.css";
 
 function Admin() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [formattedColumns, setColumns] = useState([]);
   const close = () => {
@@ -34,7 +25,7 @@ function Admin() {
 
   const fetchData = () => {
     axios
-      .get("http://localhost:7000/api/admin", {
+      .get("https://surplus-app-api.onrender.com/api/admin", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -83,7 +74,7 @@ function Admin() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:7000/api/admin/${id}`, {
+          .delete(`https://surplus-app-api.onrender.com/api/admin/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => {
@@ -122,7 +113,7 @@ function Admin() {
       if (result.isConfirmed) {
         axios
           .patch(
-            `http://localhost:7000/api/admin/${updatedRow.values._id}`,
+            `https://surplus-app-api.onrender.com/api/admin/${updatedRow.values._id}`,
             {
               ...updatedValues,
               _method: "PUT",
@@ -140,6 +131,7 @@ function Admin() {
               timer: 1500,
             });
             fetchData();
+            
           })
           .catch((error) => {
             console.error(error);
@@ -178,9 +170,10 @@ function Admin() {
     console.log(admin.username, admin.email, admin.password);
     const handleSubmit = (event) => {
       event.preventDefault();
+      setLoading(true); 
       axios
         .post(
-          "http://localhost:7000/api/admin/register",
+          "https://surplus-app-api.onrender.com/api/admin/register",
           {
             username: admin.username,
             email: admin.email,
@@ -191,7 +184,8 @@ function Admin() {
           }
         )
         .then((response) => {
-          setData([...data, response.data]);
+        
+          setData((prevData) => [...prevData, response.data]);
           setAdmin({
             username: "",
             email: "",
@@ -200,10 +194,15 @@ function Admin() {
           setOpen(false);
           Swal.fire("Success!", "Admin added successfully.", "success");
         });
+  
+          setLoading(false); // Set loading state to false after API request
+   
     };
+    
 
     return (
       <>
+         
         {open && (
           <div className="post-form-popup">
             <div className="post-container">
@@ -283,65 +282,73 @@ function Admin() {
   };
 
   return (
-    <div className="dash-main">
-      <p>Admin page</p>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{
-            backgroundColor: "var(--primary-color)",
-            color: "white",
-            fontWeight: "bold",
-          }}
-          onClick={() => setOpen(true)}
-        >
-          Add Admin
-          <FontAwesomeIcon icon={faPlus} style={{ marginLeft: "0.5em" }} />
-        </Button>
-      </Box>
-
-      <MaterialReactTable
-        columns={formattedColumns}
-        data={data}
-        enableColumnOrdering
-        enablePagination={true}
-        tableInstanceRef={tableInstanceRef}
-        enableRowActions
-        renderRowActionMenuItems={({ row }) => {
-          const admin = row.original;
-          return [
-            <div
-              key={`delete-${admin.id}`}
-              onClick={() => handleDelete(admin._id)}
-              style={{
-                paddingLeft: "16px",
-                paddingRight: "16px",
-                paddingTop: "16px",
-                paddingBottom: "6px",
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faTrash}
-                size="sm"
+    loading ? (
+      <Loader />
+    ) : (
+      <div className="dash-main">
+        <div className="category">
+          <p>Admin page</p>
+          <button
+            onClick={() => setOpen(true)}
+            style={{
+              backgroundColor: "var(--primary-color)",
+              color: "white",
+              fontWeight: "bold",
+              padding: "0.5em",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              marginBottom: "1em", 
+            }}
+          >
+            Add Admin
+            <FontAwesomeIcon icon={faPlus} style={{ marginLeft: "0.5em" }} />
+          </button>
+        </div>
+        <MaterialReactTable
+          columns={formattedColumns}
+          data={data}
+          enableColumnOrdering
+          enablePagination={true}
+          tableInstanceRef={tableInstanceRef}
+          enableRowActions
+          renderRowActionMenuItems={({ row }) => {
+            const admin = row.original;
+            return (
+              <div
+                key={`delete-${admin.id}`}
+                onClick={() => handleDelete(admin._id)}
                 style={{
-                  marginRight: "17px",
-                  color: "var(--primary-color)",
-                  fontSize: "16px",
-                  marginLeft: "4px",
+                  paddingLeft: "16px",
+                  paddingRight: "16px",
+                  paddingTop: "16px",
+                  paddingBottom: "6px",
                 }}
-              />
-              Delete
-            </div>,
-          ];
-        }}
-        editingMode="row"
-        enableEditing
-        onEditingRowSave={handleUpdate}
-      />
-      <AddAdminForm />
-    </div>
+              >
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  size="sm"
+                  style={{
+                    marginRight: "17px",
+                    color: "var(--primary-color)",
+                    fontSize: "16px",
+                    marginLeft: "4px",
+                  }}
+                />
+                Delete
+              </div>
+            );
+          }}
+          editingMode="row"
+          enableEditing
+          onEditingRowSave={handleUpdate}
+        />
+        <AddAdminForm />
+      </div>
+    )
   );
+ 
+  
 }
 
 export default Admin;
