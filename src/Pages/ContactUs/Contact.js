@@ -1,10 +1,9 @@
 import React from 'react';
-import ContactUs from '../../Component/ContactUs-section/ContactUs';
-
+import ContactUs from '../../Component/Contact/contact'
 function Contact() {
     return (
         <div>
-         <ContactUs/>   
+         <ContactUs/>
         </div>
     );
 }
