@@ -67,7 +67,7 @@ footer {
   width: 95%;
   justify-content: space-between;
   margin: 0 auto;
-  padding: 30px;
+  /* padding: 30px; */
   align-items: center;
 }
 .social p {
