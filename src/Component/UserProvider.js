@@ -6,11 +6,12 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState([]);
   const [userId, setUserId] = useState(null);
+ const [organization,setOrganization]=useState([]);
   const context = useContext(UserContext)
   const registerUser = async (userData) => {
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/user/register",
+        "https://surplus-app-api.onrender.com/api/user/register",
         userData,
         { withCredentials: true }
       );
@@ -21,32 +22,36 @@ export const UserProvider = ({ children }) => {
       console.log(error);
     }
   };
- const loginUser = async (email, password) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:7000/api/user/login",
-      { email, password },
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const loginUser = async (email, password) => {
+    try {
+      const response = await axios.post(
+        "https://surplus-app-api.onrender.com/api/user/login",
+        { email, password },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      const { ...responseData } = response.data;
+  
+      if (response.data.user.role === "Business") {
+        localStorage.setItem("userResponse", JSON.stringify(responseData));
+        setUser(responseData);
+      } else if (response.data.user.role === "Organization") {
+        localStorage.setItem("organizationResponse", JSON.stringify(responseData));
+        setOrganization(responseData);
       }
-    );
-
-    const userResponse = response.data;
-
-    // Save the response data in local storage
-    localStorage.setItem("userResponse", JSON.stringify(userResponse));
-
-    setUser(userResponse);
-
-    return userResponse;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+  
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+  
 
   const logoutUser = () => {
     setUser(null);
@@ -54,7 +59,7 @@ export const UserProvider = ({ children }) => {
   const loginAdmin = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:7000/api/admin/login",
+        "https://surplus-app-api.onrender.com/api/admin/login",
         { email, password },
         {
           withCredentials: true,
