@@ -6,6 +6,7 @@ import { RiAdminFill } from "react-icons/ri";
 import { FaUsers } from 'react-icons/fa';
 import { FaProductHunt } from "react-icons/fa";
 import { MdOutlineLogout} from "react-icons/md";
+import { AiOutlineMessage } from "react-icons/ai";
 import logo from "../Savior-removebg-preview.png";
 import Cookies from 'js-cookie';
 const activeStyle = {
@@ -39,6 +40,11 @@ function Sidebar() {
       path: "/Dashboard/User",
       name: "Users",
       icon: <FaUsers />,
+    },
+    {
+      path: "/Dashboard/Messages", 
+      name: "Messages", 
+      icon: <AiOutlineMessage />, 
     },
   ];
   const handleLogout = () => {
@@ -75,7 +81,7 @@ function Sidebar() {
 
       <ul className="sidebar-end">
         <li>
-          <Link to="" onClick={handleLogout}>
+          <Link to="/" onClick={handleLogout}>
             <MdOutlineLogout />
             Logout
           </Link>
