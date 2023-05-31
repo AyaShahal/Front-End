@@ -12,7 +12,7 @@ function hero() {
           going to waste. Help us build a world where everyone has access to
           nutritious meals while protecting our planet.
           </p>
-          <a href="#" className="btn">JOIN US</a>
+          <a href="signup" className="btn">JOIN US</a>
         </div>
       </div>
       </div>
