@@ -23,7 +23,7 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   margin: 0 auto;
   gap: 30px;
-  overflow: auto;
+  /* overflow: auto; */
   grid-template-rows: auto;
 }
 
@@ -37,7 +37,10 @@
   /* margin: 10px; */
   /* box-shadow: 5px 5px 15px 5px rgba(230, 230, 250, 1); */
 }
-
+.Food__info span{
+  color: var(--button);
+  font-weight: bold;
+}
 .card__image {
   position: relative;
   height: 190px;
@@ -104,7 +107,9 @@
   padding: 60px 0;
   width: 1450px;
   margin: 0 auto;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: center;
+
 }
 .Categories-links a {
   text-decoration: none;
@@ -204,14 +209,87 @@
 .close1{
   display: none;
 }
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border: none;
+  background-color: #eaeaea;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pagination-btn:hover {
+  background-color: #ddd;
+}
+
+.pagination-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination-info {
+  margin: 0 16px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  padding: 10px 20px;
+  color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
 @media screen and (max-width: 1200px) {
   .cards {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
     width: auto;
+flex-wrap: wrap;
   }
-  .Categories-links {
+  .Categories-links nav {
     display: none;
   }
+  .Categories-links{
+    width:auto;
+  }
+  .Categories-dropdown {
+    display: flex;
+}
+  .Categories-dropdown select {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    color: #333;
+
+}
 }
 @media screen and (max-width: 668px) {
   .wrapper{
@@ -243,8 +321,9 @@
     width: 90px;
   }
 
-  .Categories-links {
-    padding: 3% 0;
+  .Categories-links  {
+ padding-top: 50px;
+ padding-bottom: 10px;
   }
 
   .modal-content {
@@ -271,10 +350,25 @@
   .donate-button {
     margin-top: 10px;
   }
-  .Categories-links {
+  .Categories-links nav {
     display: none;
   }
-
+  .Categories-dropdown select {
+    width: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    color: #333;
+  }
+  
+  .Categories-dropdown select:focus {
+    outline: none;
+    border-color:var(--primary-color);
+  
+  }
+  
   .Categories-dropdown label {
     font-size: small;
     margin-right: 5px;
@@ -284,9 +378,7 @@
     background-color: white;
     font-size: small;
   }
-  .Categories-links {
-    display: none;
-  }
+  
   .Categories-dropdown {
     display: flex;
   }
@@ -318,5 +410,9 @@
 .modal{
       background-color: white;
 }
+.search-input{
+  width: 150px;
+}
+
   }
 
