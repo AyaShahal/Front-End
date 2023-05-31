@@ -1,0 +1,99 @@
+
+.contactForm{
+display: flex;
+justify-content: space-evenly;
+height: 600px;
+align-items: center;
+}
+.section1 h2{
+    font-size: 54px;
+    color: var(--primary-color);
+    font-family: Roboto;
+    margin-bottom: 0;
+}
+.input-message {
+    width: 100%;
+    text-align: center;
+}
+
+  
+  .input-message textarea {
+    width: 100%;
+  }
+  
+.input-message .form-control {
+    width: 92%;
+    padding: 18px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.form-control:focus{
+    color: var(--primary-color);
+}
+.contact-us__detail{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 30px;
+  }
+
+  .social-icons-container p {
+    color: #9DAFBD;
+    width: auto;
+    padding: 20px 0;
+    font-size: large;
+}
+.contact-us__detail-text{
+color: #9DAFBD;
+    width: 458px;
+    padding: 20px 0;
+    text-decoration: none;
+}
+@media screen and (max-width: 1224px) {
+    .personal{
+        width: auto;
+    }
+    .contactForm{
+    
+        width: auto;
+    padding: 20px;
+}
+    
+  
+    .section2{
+        margin-right: 0;
+
+    }
+    .contact-us__detail-text{
+        width: auto;
+    }
+    .register-inputs .input-group input{
+        width:95%;
+    }
+}
+@media screen and (max-width: 680px) {
+    .section2{
+        width: 100%;
+    }
+    .personal{
+        display: none;
+    }
+    .social1{
+        display: none;
+    }
+    .contactForm{
+        flex-direction: column;
+     
+    }
+    .form-control{
+        width: 100%;
+    }
+    .section1 h2 {
+        font-size: 36px;
+        text-align: center;
+    }
+  }
