@@ -16,6 +16,7 @@ import Admin from "./Component/Admin/Admin";
 import Users from "./Component/Users/User";
 import Product from "./Component/Product/Product";
 import Category from "./Component/Category/Category";
+import Messages from './Component/messages/messages';
 import Sidebar from "./Component/Sidebar/Sidebar";
 import {PrivateRoutes ,AdminRoutes} from "./utils/PrivateRoute";
 import Adminlogin from "./Pages/Admin-login/admin-login";
@@ -40,6 +41,10 @@ function DefaultLayout() {
         <Route path="/" element={<Home />} />
         <Route path="/About" element={<About />} />
         <Route path="/Food" element={<Food />} />
+        <Route path="/Fruits and Vegetables" element={<Food category="Fruits and Vegetables"/>} />
+        <Route path="/Meat and Poultry" element={<Food category="Meat and Poultry"/>} />
+        <Route path="/Packaged Foods and Snacks" element={<Food category="Packaged Foods and Snacks"/>} />
+        <Route path="/Prepared Meals" element={<Food category="Prepared Meals"/>} />
         <Route path="/Login" element={<Login />} />
         <Route path="/AdminLogin" element={<Adminlogin />} />
         <Route path="/Signup" element={<Signup />} />
@@ -62,11 +67,12 @@ function DashboardLayout() {
       <div className="content">
         <Routes>
         <Route element={< AdminRoutes/>}>
-          <Route path="/" element={<Dashboard />} />
+          {/* <Route path="/Admin" element={<Dashboard />} /> */}
           <Route path="/Product" element={<Product />} />
           <Route path="/Categories" element={<Category />} />
           <Route path="/User" element={<Users />} />
           <Route path="/Admin" element={<Admin />} />
+          <Route path="/Messages" element={<Messages />} />
           </Route>
         </Routes>
       </div>
