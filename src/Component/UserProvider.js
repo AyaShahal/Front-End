@@ -12,8 +12,7 @@ export const UserProvider = ({ children }) => {
     try {
       const response = await axios.post(
         "https://surplus-app-api.onrender.com/api/user/register",
-        userData,
-        { withCredentials: true }
+        userData
       );
       console.log(response)
       setUser(response.data);
@@ -28,7 +27,6 @@ export const UserProvider = ({ children }) => {
         "https://surplus-app-api.onrender.com/api/user/login",
         { email, password },
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
