@@ -4,18 +4,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Loader from "../Loader/loader";
 
 function Messages() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [formattedColumns, setColumns] = useState([]);
   const close = () => {
     setOpen(false);
   };
-  const token = Cookies.get('jwt');
+  const token = Cookies.get("jwt");
 
   const fetchData = () => {
     axios
@@ -31,7 +31,7 @@ function Messages() {
               enableEditing: false,
             },
             { accessorKey: "FirstName", header: "First Name" },
-            { accessorKey: "LastName", header: "Last Name"},
+            { accessorKey: "LastName", header: "Last Name" },
             { accessorKey: "email", header: "Email" },
             { accessorKey: "message", header: "Message" },
             {
@@ -100,14 +100,13 @@ function Messages() {
   }, []);
 
   return (
-    loading ? (
-      <Loader />
-    ) : (
-      <div className="dash-main">
-        <div className="category">
-        
-         
+    <div className="dash-main">
+      <div className="category"></div>
+      {loading ? (
+        <div className="loader-container">
+          <Loader />
         </div>
+      ) : (
         <MaterialReactTable
           columns={formattedColumns}
           data={data}
@@ -142,8 +141,8 @@ function Messages() {
             );
           }}
         />
-      </div>
-    )
+      )}
+    </div>
   );
 }
 

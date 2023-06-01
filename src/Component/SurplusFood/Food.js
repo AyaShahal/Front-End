@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import "./Food.css";
 import axios from "axios";
 import Cookies from "js-cookie";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Loader from "../Loader/loader";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import 'sweetalert2/dist/sweetalert2.css';
+import "sweetalert2/dist/sweetalert2.css";
 function Surplus() {
   const Navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,21 +20,26 @@ function Surplus() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [data, setData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const token = Cookies.get("auth");
   let id;
 
-  const organizationResponse = JSON.parse(localStorage.getItem("organizationResponse"));
-  
-  if (organizationResponse && organizationResponse.user && organizationResponse.user.id) {
+  const organizationResponse = JSON.parse(
+    localStorage.getItem("organizationResponse")
+  );
+
+  if (
+    organizationResponse &&
+    organizationResponse.user &&
+    organizationResponse.user.id
+  ) {
     id = organizationResponse.user.id;
   } else {
-    
     id = null;
   }
-  
-   console.log(id)
+
+  console.log(id);
   const closeModal = () => {
     setSelectedCardId(null);
     setSelectedCardDetails(null);
@@ -51,125 +56,128 @@ function Surplus() {
       setPage((prevPage) => prevPage + 1);
     }
   };
-  const handleCategoryChange = (event) => {    const selectedValue = event.target.value;
+  const handleCategoryChange = (event) => {
+    const selectedValue = event.target.value;
     setSelectedCategory(selectedValue);
   };
   const handleDonation = async (selectedCard) => {
     try {
-    
-        if (!token) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Login Required',
-            text: 'Please login before donating.',
-          }).then(() => {
-         Navigate('/Signup')
-          });
-          return;
-        }
+      if (!token) {
+        Swal.fire({
+          icon: "warning",
+          title: "Login Required",
+          text: "Please login before donating.",
+        }).then(() => {
+          Navigate("/Signup");
+        });
+        return;
+      }
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString();
-  
+
       const response = await axios.post(
         "https://surplus-app-api.onrender.com/api/donation",
         {
           Food: selectedCard._id,
           donationDateTime: formattedDate,
           date: formattedDate,
-          User:id
+          User: id,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      closeModal()
+      closeModal();
       Swal.fire({
-        icon: 'success',
-        title: 'Donation Successful',
-        text: 'Thank you for your donation!',
+        icon: "success",
+        title: "Donation Successful",
+        text: "Thank you for your donation!",
       });
-  
+
       console.log("Donation successful:", response.data);
     } catch (error) {
-      let errorMessage = error.response?.data?.error || 'An error occurred during the donation.';
-    
+      let errorMessage =
+        error.response?.data?.error || "An error occurred during the donation.";
+
       if (error.response?.data?.error === "jwt expired") {
-        errorMessage += ' Please log in again.';
+        errorMessage += " Please log in again.";
         Swal.fire({
-          icon: 'error',
-          title: 'Donation Error',
+          icon: "error",
+          title: "Donation Error",
           text: errorMessage,
         }).then(() => {
-        Navigate('/login');
+          Navigate("/login");
         });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Donation Error',
+          icon: "error",
+          title: "Donation Error",
           text: errorMessage,
         });
       }
-    
+
       console.log("An error occurred during donation:", error);
     }
-  }
- useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const params = {
-        page,
-        ...(searchQuery && { city: searchQuery }),
-      };
-  
-      const response = await axios.get("https://surplus-app-api.onrender.com/api/Food", {
-        params,
-      });
-      setData(response.data.products);
-      setTotalPages(response.data.totalPages);
-    } catch (error) {
-      console.log("An error occurred while fetching data:", error);
-    }
   };
-  
-  fetchData();
-}, [page, selectedCategory, searchQuery]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const params = {
+          page,
+          ...(searchQuery && { city: searchQuery }),
+        };
 
-  
- const getFilteredProducts = () => {
-  let products = [...data];
+        const response = await axios.get(
+          "https://surplus-app-api.onrender.com/api/Food",
+          {
+            params,
+          }
+        );
+        setData(response.data.products);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.log("An error occurred while fetching data:", error);
+      }
+    };
 
-  if (selectedCategory !== "") {
-    products = products.filter(
-      (product) => product.Category && product.Category.name === selectedCategory
-    );
-  }
+    fetchData();
+  }, [page, selectedCategory, searchQuery]);
 
-  if (searchQuery !== "") {
-    products = products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
+  const getFilteredProducts = () => {
+    let products = [...data];
 
-  return products;
-};
+    if (selectedCategory !== "") {
+      products = products.filter(
+        (product) =>
+          product.Category && product.Category.name === selectedCategory
+      );
+    }
 
+    if (searchQuery !== "") {
+      products = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    return products;
+  };
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`https://surplus-app-api.onrender.com/api/Food?city=${searchQuery}`);
+      const response = await axios.get(
+        `https://surplus-app-api.onrender.com/api/Food?city=${searchQuery}`
+      );
       setFilteredProducts(response.data.products);
     } catch (error) {
-      console.error('Error searching for products:', error);
+      console.error("Error searching for products:", error);
     }
   };
-  
 
   useEffect(() => {
     handleSearch();
   }, [searchQuery]);
-
 
   const openModal = (cardId) => {
     console.log("Selected Card ID:", cardId);
@@ -185,11 +193,10 @@ function Surplus() {
       console.log("Item not found!");
     }
   };
- 
-  return (
-    loading ? (
-      <Loader />
-    ) : (
+
+  return loading ? (
+    <Loader />
+  ) : (
     <div>
       <div className="wrapper">
         <h2 className="head-title">Food Surplus</h2>
@@ -224,120 +231,127 @@ function Surplus() {
               Prepared Meals
             </NavLink>
           </nav>
-          <div className="search-bar"onClick={handleSearch}  >
-  <input
-    type="text"
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-    placeholder="Search..."
-    className="search-input"
-  />
+          <div className="search-bar" onClick={handleSearch}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search..."
+              className="search-input"
+            />
 
-  <FontAwesomeIcon icon={faSearch} className="search-button "/>
-
-</div>
-<div className="Categories-dropdown">
-          <select
-            id="categorySelect"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            <option value="">All Products</option>
-            <option value="Fruits and Vegetables">Fruits and Vegetables</option>
-            <option value="Packaged Foods ">Packaged Foods</option>
-            <option value="Meat and Poultry">Meat and Poultry</option>
-            <option value="Prepared Meals">Prepared Meals</option>
-          </select>
-
+            <FontAwesomeIcon icon={faSearch} className="search-button " />
+          </div>
+          <div className="Categories-dropdown">
+            <select
+              id="categorySelect"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="">All Products</option>
+              <option value="Fruits and Vegetables">
+                Fruits and Vegetables
+              </option>
+              <option value="Packaged Foods ">Packaged Foods</option>
+              <option value="Meat and Poultry">Meat and Poultry</option>
+              <option value="Prepared Meals">Prepared Meals</option>
+            </select>
+          </div>
         </div>
-       
-        </div>
-      
 
         <div className="cards">
-  {searchQuery ? (
-    filteredProducts.length > 0 ? (
-      filteredProducts.map((item) => (
-        <div className="card1" key={item.id}>
-          <div className="card__image">
-            <img
-              src={"https://surplus-app-api.onrender.com/" + item.image}
-              alt={item.title}
-              width="370px"
-            />
-          </div>
-          <div className="card__info">
-            <div className="card__info--title">
-              <h3>{item.name}</h3>
-              <div className="Food__info">
-                <p>{item.description}</p>
-                {item.donations.length > 0 ? (
-                  <span>Donated</span>
-                ) : (
-                  <button
-                    className="btn-primary1"
-                    onClick={() => openModal(item._id)}
-                  >
-                    View
-                  </button>
-                )}
-              </div>
+          {loading ? (
+            <div className="loader-container">
+              <Loader />
             </div>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p>No products found.</p>
-    )
-  ) : (
-    getFilteredProducts().length > 0 ? (
-      getFilteredProducts().map((item) => (
-        <div className="card1" key={item.id}>
-          <div className="card__image">
-            <img
-              src={"https://surplus-app-api.onrender.com/" + item.image}
-              alt={item.title}
-              width="370px"
-            />
-          </div>
-          <div className="card__info">
-            <div className="card__info--title">
-              <h3>{item.name}</h3>
-              <div className="Food__info">
-                <p>{item.description}</p>
-                {item.donations.length > 0 ? (
-                  <span>Donated</span>
-                ) : (
-                  <button
-                    className="btn-primary1"
-                    onClick={() => openModal(item._id)}
-                  >
-                    View
-                  </button>
-                )}
+          ) : searchQuery ? (
+            filteredProducts.length > 0 ? (
+              filteredProducts.map((item) => (
+                <div className="card1" key={item.id}>
+                  <div className="card__image">
+                    <img
+                      src={"https://surplus-app-api.onrender.com/" + item.image}
+                      alt={item.title}
+                      width="370px"
+                    />
+                  </div>
+                  <div className="card__info">
+                    <div className="card__info--title">
+                      <h3>{item.name}</h3>
+                      <div className="Food__info">
+                        <p>{item.description}</p>
+                        {item.donations.length > 0 ? (
+                          <span>Donated</span>
+                        ) : (
+                          <button
+                            className="btn-primary1"
+                            onClick={() => openModal(item._id)}
+                          >
+                            View
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No products found.</p>
+            )
+          ) : getFilteredProducts().length > 0 ? (
+            getFilteredProducts().map((item) => (
+              <div className="card1" key={item.id}>
+                <div className="card__image">
+                  <img
+                    src={"https://surplus-app-api.onrender.com/" + item.image}
+                    alt={item.title}
+                    width="370px"
+                  />
+                </div>
+                <div className="card__info">
+                  <div className="card__info--title">
+                    <h3>{item.name}</h3>
+                    <div className="Food__info">
+                      <p>{item.description}</p>
+                      {item.donations.length > 0 ? (
+                        <span>Donated</span>
+                      ) : (
+                        <button
+                          className="btn-primary1"
+                          onClick={() => openModal(item._id)}
+                        >
+                          View
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            ))
+          ) : (
+            <p>No products available.</p>
+          )}
         </div>
-      ))
-    ) : (
-      <p>No products available.</p>
-    )
-  )}
-</div>
 
-
-<div className="pagination">
-  <button className="pagination-btn" onClick={handlePreviousPage} disabled={page === 1}>
-    Previous
-  </button>
-  <span className="pagination-info">
-    Page {page} of {totalPages}
-  </span>
-  <button className="pagination-btn" onClick={handleNextPage} disabled={page === totalPages}>
-    Next
-  </button>
-</div>
+        <div className="pagination">
+          <button
+            className="pagination-btn"
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+          >
+            Previous
+          </button>
+          <span className="pagination-info">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            className="pagination-btn"
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
 
         {isModalOpen && selectedCardDetails && (
           <div className="modal">
@@ -347,7 +361,10 @@ function Surplus() {
               </span>
               <div className="card2__image">
                 <img
-                  src={"https://surplus-app-api.onrender.com/" + selectedCardDetails.image}
+                  src={
+                    "https://surplus-app-api.onrender.com/" +
+                    selectedCardDetails.image
+                  }
                   alt={selectedCardDetails.name}
                   width="500px"
                   height="333px"
@@ -408,7 +425,6 @@ function Surplus() {
         )}
       </div>
     </div>
-    )
   );
 }
 

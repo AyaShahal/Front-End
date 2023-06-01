@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import MaterialReactTable from "material-react-table";
 import { NavLink } from "react-router-dom";
@@ -7,7 +6,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Loader from "../Loader/loader";
 import "./Product.css";
 
@@ -19,14 +18,14 @@ function Product() {
   const close = () => {
     setOpen(false);
   };
-  const token = Cookies.get('jwt');
+  const token = Cookies.get("jwt");
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
     axios
-      .get("https://surplus-app-api.onrender.com/api/Food", )
+      .get("https://surplus-app-api.onrender.com/api/Food")
       .then((response) => {
         console.log(response.data);
         if (response.data && Array.isArray(response.data.products)) {
@@ -64,37 +63,25 @@ function Product() {
       .catch((error) => console.error(error));
   };
 
- 
-
- 
-
-  
   return (
-    loading ? (
-      <Loader />
-    ) : (
-      <div className="dash-main">
-        <div className="category">
-          <p>Product page</p>
-         
+    <div className="dash-main">
+      <div className="category">
+        <p>Product page</p>
+      </div>
+      {loading ? (
+        <div className="loader-container">
+          <Loader />
         </div>
+      ) : (
         <MaterialReactTable
           columns={formattedColumns}
           data={data}
           enableColumnOrdering
           enablePagination={true}
-        
-          
         />
-
-      </div>
-    )
+      )}
+    </div>
   );
- 
-  
 }
-
-
-
 
 export default Product;

@@ -267,6 +267,11 @@ function Category() {
       <FontAwesomeIcon icon={faPlus} style={{ marginLeft: "0.5em" }} />
     </button>
     </div>
+    {loading ? (
+        <div className="loader-container">
+          <Loader />
+        </div>
+      ) : (
       <MaterialReactTable
         columns={formattedColumns}
         data={data}
@@ -305,6 +310,7 @@ function Category() {
         enableEditing
         onEditingRowSave={handleUpdate}
       />
+          )}
       <AddAdminForm />
     </div>
  
