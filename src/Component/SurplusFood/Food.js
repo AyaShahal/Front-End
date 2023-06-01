@@ -128,6 +128,7 @@ function Surplus() {
         );
         setData(response.data.products);
         setTotalPages(response.data.totalPages);
+        setLoading(false);
       } catch (error) {
         console.log("An error occurred while fetching data:", error);
         setLoading(false);
@@ -242,11 +243,10 @@ function Surplus() {
             </select>
           </div>
         </div>
-
-        <div className="cards">
-          {loading ? (
-            <Loader />
-          ) : (
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="cards">
             <>
               {searchQuery ? (
                 filteredProducts.length > 0 ? (
@@ -320,9 +320,8 @@ function Surplus() {
                 <p>No products available.</p>
               )}
             </>
-          )}
-        </div>
-
+          </div>
+        )}
         <div className="pagination">
           <button
             className="pagination-btn"
