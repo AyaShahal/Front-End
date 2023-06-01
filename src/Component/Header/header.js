@@ -64,8 +64,9 @@ function Header() {
   const handleLogout = () => {
     Cookies.remove("jwt");
     setIsLoggedIn(false);
-    localStorage.clear("userResponse");
+    localStorage.removeItem("userResponse");
   };
+  
   
   const handleOrganizationLogout = () => {
     Cookies.remove("auth");
