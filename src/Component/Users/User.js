@@ -22,6 +22,7 @@ function User(props) {
   }, []);
 
   const fetchData = () => {
+    setLoading(true);
     axios
       .get("https://surplus-app-api.onrender.com/api/user")
       .then((response) => {
@@ -46,12 +47,14 @@ function User(props) {
 
           setColumns(formattedColumns);
           setData(response.data.response);
+          setLoading(false);
         } else {
           console.error("Invalid response format");
           setData([]);
         }
       })
       .catch((error) => console.error(error));
+      setLoading(false);
   };
 
   return (

@@ -122,11 +122,13 @@ function Surplus() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true); 
+  
         const params = {
           page,
           ...(searchQuery && { city: searchQuery }),
         };
-
+  
         const response = await axios.get(
           "https://surplus-app-api.onrender.com/api/Food",
           {
@@ -137,9 +139,11 @@ function Surplus() {
         setTotalPages(response.data.totalPages);
       } catch (error) {
         console.log("An error occurred while fetching data:", error);
+      } finally {
+        setLoading(false); 
       }
     };
-
+  
     fetchData();
   }, [page, selectedCategory, searchQuery]);
 

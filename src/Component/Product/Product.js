@@ -24,6 +24,7 @@ function Product() {
   }, []);
 
   const fetchData = () => {
+    setLoading(true);
     axios
       .get("https://surplus-app-api.onrender.com/api/Food")
       .then((response) => {
@@ -55,12 +56,14 @@ function Product() {
 
           setColumns(formattedColumns);
           setData(response.data.products);
+          setLoading(false);
         } else {
           console.error("Invalid response format");
           setData([]);
         }
       })
       .catch((error) => console.error(error));
+      setLoading(false);
   };
 
   return (

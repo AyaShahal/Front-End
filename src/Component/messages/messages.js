@@ -18,6 +18,7 @@ function Messages() {
   const token = Cookies.get("jwt");
 
   const fetchData = () => {
+    setLoading(true);
     axios
       .get("https://surplus-app-api.onrender.com/api/Contact")
       .then((response) => {
@@ -48,12 +49,14 @@ function Messages() {
 
           setColumns(formattedColumns);
           setData(response.data.response);
+          setLoading(false);
         } else {
           console.error("Invalid response format");
           setData([]);
         }
       })
       .catch((error) => console.error(error));
+      setLoading(false);
   };
 
   const handleDelete = (id) => {
@@ -103,9 +106,7 @@ function Messages() {
     <div className="dash-main">
       <div className="category"></div>
       {loading ? (
-        <div className="loader-container">
-          <Loader />
-        </div>
+        <Loader />
       ) : (
         <MaterialReactTable
           columns={formattedColumns}

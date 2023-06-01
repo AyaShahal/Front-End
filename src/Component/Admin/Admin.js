@@ -6,7 +6,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Loader from "../Loader/loader";
 import "./Admin.css";
 
@@ -18,12 +18,13 @@ function Admin() {
   const close = () => {
     setOpen(false);
   };
-  const token = Cookies.get('jwt');
+  const token = Cookies.get("jwt");
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
+    setLoading(true);
     axios
       .get("https://surplus-app-api.onrender.com/api/admin", {
         headers: { Authorization: `Bearer ${token}` },
@@ -54,12 +55,14 @@ function Admin() {
 
           setColumns(formattedColumns);
           setData(response.data.response);
+          setLoading(false);
         } else {
           console.error("Invalid response format");
           setData([]);
         }
       })
       .catch((error) => console.error(error));
+      setLoading(false);
   };
 
   const handleDelete = (id) => {
@@ -131,7 +134,6 @@ function Admin() {
               timer: 1500,
             });
             fetchData();
-            
           })
           .catch((error) => {
             console.error(error);
@@ -170,7 +172,7 @@ function Admin() {
     console.log(admin.username, admin.email, admin.password);
     const handleSubmit = (event) => {
       event.preventDefault();
-      setLoading(true); 
+      setLoading(true);
       axios
         .post(
           "https://surplus-app-api.onrender.com/api/admin/register",
@@ -184,7 +186,6 @@ function Admin() {
           }
         )
         .then((response) => {
-        
           setData((prevData) => [...prevData, response.data]);
           setAdmin({
             username: "",
@@ -194,15 +195,12 @@ function Admin() {
           setOpen(false);
           Swal.fire("Success!", "Admin added successfully.", "success");
         });
-  
-          setLoading(false); // Set loading state to false after API request
-   
+
+      setLoading(false); 
     };
-    
 
     return (
       <>
-         
         {open && (
           <div className="post-form-popup">
             <div className="post-container">
@@ -212,7 +210,10 @@ function Admin() {
               <div className="title">
                 <h1>Add Admin</h1>
               </div>
-              <form className="register-inputs add-admin" onSubmit={handleSubmit}>
+              <form
+                className="register-inputs add-admin"
+                onSubmit={handleSubmit}
+              >
                 <div className="input-group">
                   <input
                     className="input"
@@ -294,7 +295,7 @@ function Admin() {
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
-            marginBottom: "1em", 
+            marginBottom: "1em",
           }}
         >
           Add Admin
@@ -302,9 +303,7 @@ function Admin() {
         </button>
       </div>
       {loading ? (
-        <div className="loader-container">
-          <Loader />
-        </div>
+        <Loader />
       ) : (
         <MaterialReactTable
           columns={formattedColumns}
@@ -348,10 +347,6 @@ function Admin() {
       <AddAdminForm />
     </div>
   );
-
-  
- 
-  
 }
 
 export default Admin;
