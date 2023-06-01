@@ -59,11 +59,7 @@ export const UserProvider = ({ children }) => {
       const response = await axios.post(
         "https://surplus-app-api.onrender.com/api/admin/login",
         { email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      
       );
 
       const adminResponse = response.data;
