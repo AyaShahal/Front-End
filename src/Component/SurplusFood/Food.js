@@ -120,23 +120,17 @@ function Surplus() {
     }
   };
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
-        const params = {
-          page,
-          ...(searchQuery && { city: searchQuery }),
-        };
-
         const response = await axios.get(
-          "https://surplus-app-api.onrender.com/api/Food",
-          {
-            params,
-          }
+          "https://surplus-app-api.onrender.com/api/Food"
         );
         setData(response.data.products);
         setTotalPages(response.data.totalPages);
       } catch (error) {
         console.log("An error occurred while fetching data:", error);
+        setLoading(false);
       }
     };
 
@@ -150,14 +144,6 @@ function Surplus() {
       products = products.filter(
         (product) =>
           product.Category && product.Category.name === selectedCategory
-      );
-    }
-
-    if (searchQuery !== "") {
-      products = products.filter(
-        (product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -194,9 +180,7 @@ function Surplus() {
     }
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <div>
       <div className="wrapper">
         <h2 className="head-title">Food Surplus</h2>
@@ -260,72 +244,82 @@ function Surplus() {
         </div>
 
         <div className="cards">
-          {searchQuery ? (
-            filteredProducts.length > 0 ? (
-              filteredProducts.map((item) => (
-                <div className="card1" key={item.id}>
-                  <div className="card__image">
-                    <img
-                      src={"https://surplus-app-api.onrender.com/" + item.image}
-                      alt={item.title}
-                      width="370px"
-                    />
-                  </div>
-                  <div className="card__info">
-                    <div className="card__info--title">
-                      <h3>{item.name}</h3>
-                      <div className="Food__info">
-                        <p>{item.description}</p>
-                        {item.donations.length > 0 ? (
-                          <span>Donated</span>
-                        ) : (
-                          <button
-                            className="btn-primary1"
-                            onClick={() => openModal(item._id)}
-                          >
-                            View
-                          </button>
-                        )}
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              {searchQuery ? (
+                filteredProducts.length > 0 ? (
+                  filteredProducts.map((item) => (
+                    <div className="card1" key={item.id}>
+                      <div className="card__image">
+                        <img
+                          src={
+                            "https://surplus-app-api.onrender.com/" + item.image
+                          }
+                          alt={item.title}
+                          width="370px"
+                        />
+                      </div>
+                      <div className="card__info">
+                        <div className="card__info--title">
+                          <h3>{item.name}</h3>
+                          <div className="Food__info">
+                            <p>{item.description}</p>
+                            {item.donations.length > 0 ? (
+                              <span>Donated</span>
+                            ) : (
+                              <button
+                                className="btn-primary1"
+                                onClick={() => openModal(item._id)}
+                              >
+                                View
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No products found.</p>
+                )
+              ) : getFilteredProducts().length > 0 ? (
+                getFilteredProducts().map((item) => (
+                  <div className="card1" key={item.id}>
+                    <div className="card__image">
+                      <img
+                        src={
+                          "https://surplus-app-api.onrender.com/" + item.image
+                        }
+                        alt={item.title}
+                        width="370px"
+                      />
+                    </div>
+                    <div className="card__info">
+                      <div className="card__info--title">
+                        <h3>{item.name}</h3>
+                        <div className="Food__info">
+                          <p>{item.description}</p>
+                          {item.donations.length > 0 ? (
+                            <span>Donated</span>
+                          ) : (
+                            <button
+                              className="btn-primary1"
+                              onClick={() => openModal(item._id)}
+                            >
+                              View
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <p>No products found.</p>
-            )
-          ) : getFilteredProducts().length > 0 ? (
-            getFilteredProducts().map((item) => (
-              <div className="card1" key={item.id}>
-                <div className="card__image">
-                  <img
-                    src={"https://surplus-app-api.onrender.com/" + item.image}
-                    alt={item.title}
-                    width="370px"
-                  />
-                </div>
-                <div className="card__info">
-                  <div className="card__info--title">
-                    <h3>{item.name}</h3>
-                    <div className="Food__info">
-                      <p>{item.description}</p>
-                      {item.donations.length > 0 ? (
-                        <span>Donated</span>
-                      ) : (
-                        <button
-                          className="btn-primary1"
-                          onClick={() => openModal(item._id)}
-                        >
-                          View
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No products available.</p>
+                ))
+              ) : (
+                <p>No products available.</p>
+              )}
+            </>
           )}
         </div>
 
