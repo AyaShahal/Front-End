@@ -73,7 +73,7 @@ const Sidebar = () => {
       <div className="sidebar-main">
         <div className="logo-container">
           <div className="sidebar-toggle" onClick={toggleSidebar}>
-            <MdMenu size={30} />
+            <MdMenu size={24} />
           </div>
           <div
             className="logo"
