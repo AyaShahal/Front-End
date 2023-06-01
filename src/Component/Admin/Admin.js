@@ -280,31 +280,32 @@ function Admin() {
   const someEventHandler = () => {
     console.log(tableInstanceRef.current.getState().sorting);
   };
-
   return (
-    loading ? (
-      <Loader />
-    ) : (
-      <div className="dash-main">
-        <div className="category">
-          <p>Admin page</p>
-          <button
-            onClick={() => setOpen(true)}
-            style={{
-              backgroundColor: "var(--primary-color)",
-              color: "white",
-              fontWeight: "bold",
-              padding: "0.5em",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              marginBottom: "1em", 
-            }}
-          >
-            Add Admin
-            <FontAwesomeIcon icon={faPlus} style={{ marginLeft: "0.5em" }} />
-          </button>
+    <div className="dash-main">
+      <div className="category">
+        <p>Admin page</p>
+        <button
+          onClick={() => setOpen(true)}
+          style={{
+            backgroundColor: "var(--primary-color)",
+            color: "white",
+            fontWeight: "bold",
+            padding: "0.5em",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            marginBottom: "1em", 
+          }}
+        >
+          Add Admin
+          <FontAwesomeIcon icon={faPlus} style={{ marginLeft: "0.5em" }} />
+        </button>
+      </div>
+      {loading ? (
+        <div className="loader-container">
+          <Loader />
         </div>
+      ) : (
         <MaterialReactTable
           columns={formattedColumns}
           data={data}
@@ -343,10 +344,12 @@ function Admin() {
           enableEditing
           onEditingRowSave={handleUpdate}
         />
-        <AddAdminForm />
-      </div>
-    )
+      )}
+      <AddAdminForm />
+    </div>
   );
+
+  
  
   
 }
