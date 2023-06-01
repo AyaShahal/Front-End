@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Loader from "../Loader/loader";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Cookies from 'js-cookie';
 
@@ -14,6 +15,7 @@ function Category() {
    
  const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formattedColumns, setColumns] = useState([]);
   const close = () => {
     setOpen(false);
