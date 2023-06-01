@@ -213,7 +213,9 @@
     font-size: 16px;
   }
 }
-
+.dropdown-toggle{
+  cursor: pointer;
+}
 
 @media (max-width: 768px) {
   .navbar {

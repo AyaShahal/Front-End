@@ -20,23 +20,27 @@ function Header() {
   const [organizationName, setOrganizationName]=useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [Open, setOpen] = useState(false);
-  const isMobile = window.matchMedia("(max-width: 767px)").matches;
-const iconToShow = 
+ 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userResponse");
-    const storedOrganization = localStorage.getItem("organizationResponse");
     const token = Cookies.get("jwt");
-  const auth = Cookies.get("auth");
-    if (storedUser && token) {
-      const parsedUser = JSON.parse(storedUser);
-      const userFullName = `${parsedUser.user.username}`;
-      setUserName(userFullName);
-      setIsLoggedIn(true);
-    } else if (storedOrganization && auth) {
-      const parsedOrganization = JSON.parse(storedOrganization);
-      const organizationName = `${parsedOrganization.user.username}`;
-      setOrganizationName(organizationName);
-      setIsLoggedIn(true);
+    const auth = Cookies.get("auth");
+  
+    if (token) {
+      const storedUser = localStorage.getItem("userResponse");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        const fullName = `${parsedUser.user.username}`;
+        setUserName(fullName);
+        setIsLoggedIn(true);
+      }
+    } else if (auth) {
+      const storedOrganization = localStorage.getItem("organizationResponse");
+      if (storedOrganization) {
+        const parsedOrganization = JSON.parse(storedOrganization);
+        const organizationName = `${parsedOrganization.user.username}`;
+        setOrganizationName(organizationName);
+        setIsLoggedIn(true);
+      }
     } else {
       setIsLoggedIn(false);
     }
