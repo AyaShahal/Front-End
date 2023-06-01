@@ -137,6 +137,7 @@ function Surplus() {
         );
         setData(response.data.products);
         setTotalPages(response.data.totalPages);
+        setLoading(false); 
       } catch (error) {
         console.log("An error occurred while fetching data:", error);
       } finally {
@@ -198,7 +199,9 @@ function Surplus() {
     }
   };
 
- 
+  return loading ? (
+    <Loader />
+  ) : (
     <div>
       <div className="wrapper">
         <h2 className="head-title">Food Surplus</h2>
@@ -427,7 +430,7 @@ function Surplus() {
         )}
       </div>
     </div>
-
+  );
 }
 
 export default Surplus;
