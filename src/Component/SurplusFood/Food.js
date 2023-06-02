@@ -121,11 +121,18 @@ function Surplus() {
   };
   useEffect(() => {
     setLoading(true);
+  
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://surplus-app-api.onrender.com/api/Food"
+          "https://surplus-app-api.onrender.com/api/Food",
+          {
+            params: {
+              page: page,
+            },
+          }
         );
+  
         setData(response.data.products);
         setTotalPages(response.data.totalPages);
         setLoading(false);
@@ -134,9 +141,10 @@ function Surplus() {
         setLoading(false);
       }
     };
-
+  
     fetchData();
-  }, [page, selectedCategory, searchQuery]);
+  }, [page]);
+  
 
   const getFilteredProducts = () => {
     let products = [...data];
