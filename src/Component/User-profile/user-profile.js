@@ -86,9 +86,7 @@ function User() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(
-        "https://surplus-app-api.onrender.com/api/category"
-      );
+      const response = await axios.get("https://surplus-app-api.onrender.com/api/category");
       const categories = response.data;
       setCategories(categories);
       console.log(categories);
@@ -201,12 +199,12 @@ function User() {
   };
 
   useEffect(() => {
-    const savedPosts = localStorage.getItem(userResponse.user.id);
+    const savedPosts = localStorage.getItem("posts");
     if (savedPosts) {
       setPosts(JSON.parse(savedPosts));
       setShowForm(false);
     }
-  }, [userResponse]);
+  }, []);
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
@@ -225,7 +223,8 @@ function User() {
       formData.append("description", postFormValues.description);
       formData.append("image", e.target.image.files[0]);
       formData.append("Category", postFormValues.Category);
-      formData.append("User", userResponse.user.id);
+
+      formData.append("User", id);
 
       const response = await axios.post(
         "https://surplus-app-api.onrender.com/api/Food",
@@ -242,10 +241,9 @@ function User() {
       });
 
       const newPost = response.data;
-      const updatedPosts = [...posts, newPost];
-      setPosts(updatedPosts);
+      setPosts((prevPosts) => [...prevPosts, newPost]);
 
-      localStorage.setItem(userResponse.user.id, JSON.stringify(updatedPosts));
+      localStorage.setItem("posts", JSON.stringify([...posts, newPost]));
     } catch (error) {
       console.log(error);
 
@@ -257,82 +255,82 @@ function User() {
     }
   };
 
-  const handleEditPost = async (postId, e) => {
-    e.preventDefault();
-    setIsModalOpen(true);
+const handleEditPost = async (postId, e) => {
+  e.preventDefault();
+  setIsModalOpen(true);
 
-    console.log("Post to edit:", postToEdit);
+  console.log("Post to edit:", postToEdit);
 
-    try {
-      const storedPosts = JSON.parse(localStorage.getItem("posts"));
+  try {
+    const storedPosts = JSON.parse(localStorage.getItem("posts"));
 
-      if (Array.isArray(storedPosts)) {
-        const foundPost = storedPosts.find((post) => post._id === postId);
+    if (Array.isArray(storedPosts)) {
+      const foundPost = storedPosts.find((post) => post._id === postId);
 
-        if (foundPost) {
-          setPostToEdit(foundPost);
+      if (foundPost) {
+        setPostToEdit(foundPost);
 
-          const updatedPost = {
-            ...foundPost,
-            name: postToEdit.name,
-            quantity: postToEdit.quantity,
-            description: postToEdit.description,
-            expirydate: postToEdit.expirydate,
-          };
+        const updatedPost = {
+          ...foundPost,
+          name: postToEdit.name,
+          quantity: postToEdit.quantity,
+          description: postToEdit.description,
+          expirydate: postToEdit.expirydate,
+        };
 
-          // Update the postToEdit state with the new values
-          setPostToEdit(updatedPost);
+        // Update the postToEdit state with the new values
+        setPostToEdit(updatedPost);
 
-          const formData = new FormData();
-          formData.append("name", updatedPost.name);
-          formData.append("quantity", updatedPost.quantity);
-          formData.append("description", updatedPost.description);
-          formData.append("expirydate", updatedPost.expirydate);
+        const formData = new FormData();
+        formData.append("name", updatedPost.name);
+        formData.append("quantity", updatedPost.quantity);
+        formData.append("description", updatedPost.description);
+        formData.append("expirydate", updatedPost.expirydate);
 
-          if (e.target.files?.length > 0) {
-            const file = e.target.files[0];
-            formData.append("image", file, file.name);
-          }
-
-          console.log("FormData:", formData);
-
-          const token = Cookies.get("jwt");
-          const headers = {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          };
-
-          const response = await axios.patch(
-            `https://surplus-app-api.onrender.com/api/Food/${postId}`,
-            formData,
-            { headers }
-          );
-
-          console.log("Post updated:", response.data);
-        } else {
-          console.error("Post not found");
+        if (e.target.files?.length > 0) {
+          const file = e.target.files[0];
+          formData.append("image", file, file.name);
         }
+
+        console.log("FormData:", formData);
+
+        const token = Cookies.get("jwt");
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        };
+
+        const response = await axios.patch(
+          `https://surplus-app-api.onrender.com/api/Food/${postId}`,
+          formData,
+          { headers }
+        );
+
+        console.log("Post updated:", response.data);
       } else {
-        console.error("Posts is not an array");
+        console.error("Post not found");
       }
-    } catch (error) {
-      console.error("Error updating post:", error);
+    } else {
+      console.error("Posts is not an array");
     }
-  };
+  } catch (error) {
+    console.error("Error updating post:", error);
+  }
+};
 
-  const handlepostChange = (e) => {
-    const { name, value } = e.target;
-    console.log("Input change:", name, value);
-    setPostToEdit((prevPost) => ({
-      ...prevPost,
-      [name]: value,
-    }));
-  };
+const handlepostChange = (e) => {
+  const { name, value } = e.target;
+  console.log("Input change:", name, value);
+  setPostToEdit((prevPost) => ({
+    ...prevPost,
+    [name]: value,
+  }));
+};
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setPostToEdit((prevPost) => ({ ...prevPost, image: file }));
-  };
+const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  setPostToEdit((prevPost) => ({ ...prevPost, image: file }));
+};
 
   const deletePost = async (postId) => {
     try {
@@ -351,12 +349,9 @@ function User() {
           Authorization: `Bearer ${token}`,
         };
 
-        await axios.delete(
-          `https://surplus-app-api.onrender.com/api/Food/${postId}`,
-          {
-            headers,
-          }
-        );
+        await axios.delete(`https://surplus-app-api.onrender.com/api/Food/${postId}`, {
+          headers,
+        });
 
         setPosts((prevPosts) =>
           prevPosts.filter((post) => post._id !== postId)
@@ -429,44 +424,43 @@ function User() {
             </div>
 
             <div className="profile-posts">
-  {Array.isArray(userResponse.posts) &&
-    userResponse.posts.map((post, index) => (
-      <div className="post" key={index}>
-        <div className="post__image">
-          <img
-            src={"https://surplus-app-api.onrender.com/" + post.image}
-            alt={post.name}
-          />
-        </div>
-        <div className="post__info">
-          <div className="post__info--title">
-            <h3>{post.name}</h3>
-            <div className="Food__info">
-              <p>{post.description}</p>
-            </div>
-            <div className="post__actions">
-              <button
-                className="edit-button"
-                onClick={() => {
-                  setIsModalOpen(true);
-                  setPostToEdit(post);
-                }}
-              >
-                <FontAwesomeIcon icon={faEdit} />
-              </button>
+              {Array.isArray(posts) &&
+                posts.map((post, index) => (
+                  <div className="post" key={index}>
+                    <div className="post__image">
+                      <img
+                        src={"https://surplus-app-api.onrender.com/" + post.image}
+                        alt={post.name}
+                      />
+                    </div>
+                    <div className="post__info">
+                      <div className="post__info--title">
+                        <h3>{post.name}</h3>
+                        <div className="Food__info">
+                          <p>{post.description}</p>
+                        </div>
+                        <div className="post__actions">
+                          <button
+                            className="edit-button"
+                            onClick={() => {
+                              setIsModalOpen(true);
+                              setPostToEdit(post);
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
 
-              <button className="delete-button">
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  onClick={() => deletePost(post._id)}
-                />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
-
+                          <button className="delete-button">
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              onClick={() => deletePost(post._id)}
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               {isModalOpen && postToEdit && (
                 <div className="modal2">
                   <div className="modal2-content">
