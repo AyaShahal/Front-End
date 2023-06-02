@@ -86,7 +86,9 @@ function User() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("https://surplus-app-api.onrender.com/api/category");
+      const response = await axios.get(
+        "https://surplus-app-api.onrender.com/api/category"
+      );
       const categories = response.data;
       setCategories(categories);
       console.log(categories);
@@ -198,14 +200,6 @@ function User() {
     }
   };
 
-  useEffect(() => {
-    const savedPosts = localStorage.getItem("posts");
-    if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
-      setShowForm(false);
-    }
-  }, []);
-
   const handlePostSubmit = async (e) => {
     e.preventDefault();
 
@@ -241,9 +235,14 @@ function User() {
       });
 
       const newPost = response.data;
-      setPosts((prevPosts) => [...prevPosts, newPost]);
 
-      localStorage.setItem("posts", JSON.stringify([...posts, newPost]));
+      const existingPosts = JSON.parse(localStorage.getItem(id)) || [];
+
+      const updatedPosts = [...existingPosts, newPost];
+
+      localStorage.setItem(id, JSON.stringify(updatedPosts));
+
+      setPosts((prevPosts) => [...prevPosts, newPost]);
     } catch (error) {
       console.log(error);
 
@@ -258,18 +257,18 @@ function User() {
   const handleEditPost = async (postId, e) => {
     e.preventDefault();
     setIsModalOpen(true);
-  
+
     console.log("Post to edit:", postToEdit);
-  
+
     try {
       const storedPosts = JSON.parse(localStorage.getItem("posts"));
-  
+
       if (Array.isArray(storedPosts)) {
         const foundPost = storedPosts.find((post) => post._id === postId);
-  
+
         if (foundPost) {
           setPostToEdit(foundPost);
-  
+
           const updatedPost = {
             ...foundPost,
             name: postToEdit.name,
@@ -277,35 +276,35 @@ function User() {
             description: postToEdit.description,
             expirydate: postToEdit.expirydate,
           };
-  
+
           // Update the postToEdit state with the new values
           setPostToEdit(updatedPost);
-  
+
           const formData = new FormData();
           formData.append("name", updatedPost.name);
           formData.append("quantity", updatedPost.quantity);
           formData.append("description", updatedPost.description);
           formData.append("expirydate", updatedPost.expirydate);
-  
+
           if (e.target.files?.length > 0) {
             const file = e.target.files[0];
             formData.append("image", file, file.name);
           }
-  
+
           console.log("FormData:", formData);
-  
+
           const token = Cookies.get("jwt");
           const headers = {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           };
-  
+
           const response = await axios.patch(
             `https://surplus-app-api.onrender.com/api/Food/${postId}`,
             formData,
             { headers }
           );
-  
+
           console.log("Post updated:", response.data);
         } else {
           console.error("Post not found");
@@ -317,7 +316,7 @@ function User() {
       console.error("Error updating post:", error);
     }
   };
-  
+
   const handlepostChange = (e) => {
     const { name, value } = e.target;
     console.log("Input change:", name, value);
@@ -326,12 +325,12 @@ function User() {
       [name]: value,
     }));
   };
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setPostToEdit((prevPost) => ({ ...prevPost, image: file }));
   };
-  
+
   const deletePost = async (postId) => {
     try {
       const confirmResult = await Swal.fire({
@@ -349,9 +348,12 @@ function User() {
           Authorization: `Bearer ${token}`,
         };
 
-        await axios.delete(`https://surplus-app-api.onrender.com/api/Food/${postId}`, {
-          headers,
-        });
+        await axios.delete(
+          `https://surplus-app-api.onrender.com/api/Food/${postId}`,
+          {
+            headers,
+          }
+        );
 
         setPosts((prevPosts) =>
           prevPosts.filter((post) => post._id !== postId)
@@ -429,7 +431,9 @@ function User() {
                   <div className="post" key={index}>
                     <div className="post__image">
                       <img
-                        src={"https://surplus-app-api.onrender.com/" + post.image}
+                        src={
+                          "https://surplus-app-api.onrender.com/" + post.image
+                        }
                         alt={post.name}
                       />
                     </div>

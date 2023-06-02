@@ -120,7 +120,7 @@ function Signin() {
               <NavLink to="/">Forgot password?</NavLink>
             </div> */}
             <div className="register-buttons">
-          <button type="submit" disabled={loading}> {loading ? "Logging in..." : "Login"}</button>
+          <button type="submit" disabled={loading}> {loading ? "Logging ..." : "Login"}</button>
          
         </div>
           </div>
