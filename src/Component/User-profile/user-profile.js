@@ -179,15 +179,15 @@ function User() {
   };
   const handlePostInputChange = (e) => {
     const { name, value } = e.target;
-
+  
     if (name === "Category") {
       const selectedCategoryId = value;
       const selectedCategory = categories.response.find(
         (category) => category._id === selectedCategoryId
       );
-
+  
       console.log("Selected Category:", selectedCategory);
-
+  
       setPostFormValues((prevValues) => ({
         ...prevValues,
         Category: selectedCategory ? selectedCategory._id : "",
@@ -199,17 +199,25 @@ function User() {
       }));
     }
   };
-
+  
+  useEffect(() => {
+    const savedPosts = localStorage.getItem(userResponse.user.id);
+    if (savedPosts) {
+      setPosts(JSON.parse(savedPosts));
+      setShowForm(false);
+    }
+  }, [userResponse]);
+  
   const handlePostSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const token = Cookies.get("jwt");
       const headers = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       };
-
+  
       const formData = new FormData();
       formData.append("name", postFormValues.name);
       formData.append("quantity", postFormValues.quantity);
@@ -217,15 +225,14 @@ function User() {
       formData.append("description", postFormValues.description);
       formData.append("image", e.target.image.files[0]);
       formData.append("Category", postFormValues.Category);
-
-      formData.append("User", id);
-
+      formData.append("User", userResponse.user.id);
+  
       const response = await axios.post(
         "https://surplus-app-api.onrender.com/api/Food",
         formData,
         { headers }
       );
-
+  
       console.log(response.data);
       setShowForm(false);
       Swal.fire({
@@ -233,19 +240,15 @@ function User() {
         title: "Post Successful",
         text: "Your form data has been posted.",
       });
-
+  
       const newPost = response.data;
-
-      const existingPosts = JSON.parse(localStorage.getItem(id)) || [];
-
-      const updatedPosts = [...existingPosts, newPost];
-
-      localStorage.setItem(id, JSON.stringify(updatedPosts));
-
-      setPosts((prevPosts) => [...prevPosts, newPost]);
+      const updatedPosts = [...posts, newPost];
+      setPosts(updatedPosts);
+  
+      localStorage.setItem(userResponse.user.id, JSON.stringify(updatedPosts));
     } catch (error) {
       console.log(error);
-
+  
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -253,6 +256,7 @@ function User() {
       });
     }
   };
+  
 
   const handleEditPost = async (postId, e) => {
     e.preventDefault();
