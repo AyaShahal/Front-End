@@ -1,20 +1,24 @@
 import React, { useState, useContext, useEffect } from "react";
-import { UserContext } from "../UserProvider";
 import axios from "axios";
 import "./user-profile.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import Loader from "../Loader/loader";
 import { Navigate } from "react-router-dom";
 function User() {
   const [isOpen, setIsOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [edit, setEdit] = useState(null);
   const [isFormModified, setIsFormModified] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [previousImage, setPreviousImage] = useState("");
   const [postToEdit, setPostToEdit] = useState(null);
 
   const [postFormValues, setPostFormValues] = useState({
@@ -25,7 +29,17 @@ function User() {
     image: "",
     Category: "",
   });
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
 
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
   const userResponse = JSON.parse(localStorage.getItem("userResponse"));
   let id;
 
@@ -86,11 +100,16 @@ function User() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("https://surplus-app-api.onrender.com/api/category");
+      setLoading(true);
+      const response = await axios.get(
+        "https://surplus-app-api.onrender.com/api/category"
+      );
       const categories = response.data;
       setCategories(categories);
       console.log(categories);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -114,7 +133,7 @@ function User() {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       };
-
+      setLoading(true);
       const response = await axios.put(
         `https://surplus-app-api.onrender.com/api/user/edit/${id}`,
         {
@@ -137,7 +156,7 @@ function User() {
 
       setEdit(response.data);
       setIsOpen(false);
-
+      setLoading(false);
       const updatedUserResponse = { ...userResponse };
 
       updatedUserResponse.user.email = formValues.email;
@@ -198,18 +217,11 @@ function User() {
     }
   };
 
-  useEffect(() => {
-    const savedPosts = localStorage.getItem("posts");
-    if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
-      setShowForm(false);
-    }
-  }, []);
-
   const handlePostSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const token = Cookies.get("jwt");
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -234,6 +246,7 @@ function User() {
 
       console.log(response.data);
       setShowForm(false);
+      setLoading(false);
       Swal.fire({
         icon: "success",
         title: "Post Successful",
@@ -242,11 +255,9 @@ function User() {
 
       const newPost = response.data;
       setPosts((prevPosts) => [...prevPosts, newPost]);
-
-      localStorage.setItem("posts", JSON.stringify([...posts, newPost]));
     } catch (error) {
       console.log(error);
-
+      setLoading(false);
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -254,86 +265,106 @@ function User() {
       });
     }
   };
+  useEffect(() => {
+    fetchUserPosts();
+  }, [page]);
 
-const handleEditPost = async (postId, e) => {
-  e.preventDefault();
-  setIsModalOpen(true);
-
-  console.log("Post to edit:", postToEdit);
-
-  try {
-    const storedPosts = JSON.parse(localStorage.getItem("posts"));
-
-    if (Array.isArray(storedPosts)) {
-      const foundPost = storedPosts.find((post) => post._id === postId);
-
-      if (foundPost) {
-        setPostToEdit(foundPost);
-
-        const updatedPost = {
-          ...foundPost,
-          name: postToEdit.name,
-          quantity: postToEdit.quantity,
-          description: postToEdit.description,
-          expirydate: postToEdit.expirydate,
-        };
-
-        // Update the postToEdit state with the new values
-        setPostToEdit(updatedPost);
-
-        const formData = new FormData();
-        formData.append("name", updatedPost.name);
-        formData.append("quantity", updatedPost.quantity);
-        formData.append("description", updatedPost.description);
-        formData.append("expirydate", updatedPost.expirydate);
-
-        if (e.target.files?.length > 0) {
-          const file = e.target.files[0];
-          formData.append("image", file, file.name);
+  const fetchUserPosts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://surplus-app-api.onrender.com/api/Food/user/${id}`,
+        {
+          params: {
+            page: page,
+          },
         }
-
-        console.log("FormData:", formData);
-
-        const token = Cookies.get("jwt");
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        };
-
-        const response = await axios.patch(
-          `https://surplus-app-api.onrender.com/api/Food/${postId}`,
-          formData,
-          { headers }
-        );
-
-        console.log("Post updated:", response.data);
-      } else {
-        console.error("Post not found");
-      }
-    } else {
-      console.error("Posts is not an array");
+      );
+      console.log(response);
+      const products = response.data.foods;
+      setPosts(products);
+      console.log(products);
+      setTotalPages(response.data.totalPages);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred while fetching user posts.",
+      });
     }
-  } catch (error) {
-    console.error("Error updating post:", error);
-  }
-};
+  };
 
-const handlepostChange = (e) => {
-  const { name, value } = e.target;
-  console.log("Input change:", name, value);
-  setPostToEdit((prevPost) => ({
-    ...prevPost,
-    [name]: value,
-  }));
-};
+  const handleUpdatePost = async (e) => {
+    e.preventDefault();
 
-const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  setPostToEdit((prevPost) => ({ ...prevPost, image: file }));
-};
+    try {
+      setLoading(true);
+      const token = Cookies.get("jwt");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      };
+
+      const formData = new FormData();
+      formData.append("name", postToEdit.name);
+      formData.append("quantity", postToEdit.quantity);
+      formData.append("expirydate", postToEdit.expirydate);
+      formData.append("description", postToEdit.description);
+
+      if (e.target.elements.image.files.length > 0) {
+        const file = e.target.elements.image.files[0];
+        formData.append("image", file);
+      } else {
+        formData.append("image", previousImage);
+      }
+
+      const response = await axios.patch(
+        `https://surplus-app-api.onrender.com/api/Food/${postToEdit._id}`,
+        formData,
+        { headers }
+      );
+
+      console.log("Post updated:", response.data);
+
+      setIsModalOpen(false);
+      setLoading(false);
+      Swal.fire({
+        icon: "success",
+        title: "Post Updated",
+        text: "Your post has been updated successfully.",
+      });
+
+      const updatedPost = response.data;
+    } catch (error) {
+      console.error("Error updating post:", error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred while updating the post.",
+      });
+    }
+  };
+  const handlepostChange = (e) => {
+    const { name, value } = e.target;
+    console.log("Input change:", name, value);
+    setPostToEdit((prevPost) => ({
+      ...prevPost,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setPostToEdit((prevPost) => ({ ...prevPost, image: file }));
+  };
 
   const deletePost = async (postId) => {
     try {
+      setLoading(true);
       const confirmResult = await Swal.fire({
         title: "Are you sure?",
         text: "This action cannot be undone.",
@@ -349,17 +380,15 @@ const handleFileChange = (e) => {
           Authorization: `Bearer ${token}`,
         };
 
-        await axios.delete(`https://surplus-app-api.onrender.com/api/Food/${postId}`, {
-          headers,
-        });
+        await axios.delete(
+          `https://surplus-app-api.onrender.com/api/Food/${postId}`,
+          {
+            headers,
+          }
+        );
 
         setPosts((prevPosts) =>
           prevPosts.filter((post) => post._id !== postId)
-        );
-
-        localStorage.setItem(
-          "posts",
-          JSON.stringify(posts.filter((post) => post._id !== postId))
         );
 
         Swal.fire({
@@ -370,7 +399,7 @@ const handleFileChange = (e) => {
       }
     } catch (error) {
       console.log(error);
-
+      setLoading(false);
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -378,7 +407,6 @@ const handleFileChange = (e) => {
       });
     }
   };
-
   return (
     <div className="profile">
       <div className="profile-container">
@@ -422,261 +450,290 @@ const handleFileChange = (e) => {
                 </button>
               </ul>
             </div>
-
-            <div className="profile-posts">
-              {Array.isArray(posts) &&
-                posts.map((post, index) => (
-                  <div className="post" key={index}>
-                    <div className="post__image">
-                      <img
-                        src={"https://surplus-app-api.onrender.com/" + post.image}
-                        alt={post.name}
-                      />
-                    </div>
-                    <div className="post__info">
-                      <div className="post__info--title">
-                        <h3>{post.name}</h3>
-                        <div className="Food__info">
-                          <p>{post.description}</p>
-                        </div>
-                        <div className="post__actions">
-                          <button
-                            className="edit-button"
-                            onClick={() => {
-                              setIsModalOpen(true);
-                              setPostToEdit(post);
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faEdit} />
-                          </button>
-
-                          <button className="delete-button">
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              onClick={() => deletePost(post._id)}
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="profile-posts">
+                {Array.isArray(posts) && posts.length > 0 ? (
+                  <>
+                    {posts
+                      .filter((post) => post.User._id === id)
+                      .map((post, index) => (
+                        <div className="post" key={index}>
+                          <div className="post__image">
+                            <img
+                              src={
+                                "https://surplus-app-api.onrender.com/" +
+                                post.image
+                              }
+                              alt={post.name}
                             />
-                          </button>
+                          </div>
+                          <div className="post__info">
+                            <div className="post__info--title">
+                              <h3>{post.name}</h3>
+                              <div className="Food__info">
+                                <p>{post.description}</p>
+                              </div>
+                              <div className="post__actions">
+                                <button
+                                  className="edit-button"
+                                  onClick={() => {
+                                    setIsModalOpen(true);
+                                    setPostToEdit(post);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faEdit} />
+                                </button>
+                                <button
+                                  className="delete-button"
+                                  onClick={() => deletePost(post._id)}
+                                >
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              {isModalOpen && postToEdit && (
-                <div className="modal2">
-                  <div className="modal2-content">
-                    <span className="close1" onClick={closeModal}>
-                      &times;
-                    </span>
-                    <div className="title">
-                      <h1>Edit post</h1>
-                    </div>
-                    <form
-                      className="profile-form"
-                      key={postToEdit._id}
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        handleEditPost(postToEdit._id, e);
-                      }}
-                    >
-                      <input
-                        type="text"
-                        name="name"
-                        value={postToEdit.name}
-                        onChange={(e) => handlepostChange(e, postToEdit)}
-                      />
+                      ))}
+                  </>
+                ) : (
+                  <p>No posts available.</p>
+                )}
 
-                      <input
-                        type="number"
-                        name="quantity"
-                        required={true}
-                        value={postToEdit.quantity}
-                        onChange={handlepostChange}
-                      />
-
-                      <input
-                        type="text"
-                        name="description"
-                        required={true}
-                        value={postToEdit.description}
-                        onChange={handlepostChange}
-                      />
-
-                      <input
-                        type="date"
-                        name="expirydate"
-                        required={true}
-                        value={postToEdit.expirydate.slice(0, 10)}
-                        onChange={handlepostChange}
-                      />
-                      <input
-                        type="file"
-                        name="image"
-                        // required={true}
-                        onChange={(e) => handleFileChange(e, postToEdit._id)}
-                      />
-
-                      <div className="group">
-                        <select
-                          className="select"
-                          name="Category"
-                          required={true}
-                          value={postToEdit.Category}
-                          onChange={handlepostChange}
-                        >
-                          <option value={postToEdit.Category} hidden>
-                            {postToEdit.Category
-                              ? postToEdit.Category.name
-                              : "Select Category"}
-                          </option>
-
-                          {categories &&
-                            categories.success &&
-                            categories.response &&
-                            categories.response.map((category) => (
-                              <option key={category._id} value={category._id}>
-                                {category.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div className="post-btn-group">
-                        <div className="cancel-button">
-                          <button
-                            type="button"
-                            className="cancel"
-                            onClick={closeModal}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                        <button type="submit" className="cancel">
-                          Update
-                        </button>
-                      </div>
-                    </form>
-                  </div>
+                <div className="pagination">
+                  <button
+                    className="pagination-btn"
+                    onClick={handlePreviousPage}
+                    disabled={page === 1}
+                  >
+                    Previous
+                  </button>
+                  <span className="pagination-info">
+                    Page {page} of {totalPages}
+                  </span>
+                  <button
+                    className="pagination-btn"
+                    onClick={handleNextPage}
+                    disabled={page === totalPages}
+                  >
+                    Next
+                  </button>
                 </div>
-              )}
-              {showForm && (
-                <div className="post-form-popup">
-                  <div className="post-container">
-                    <span className="close" onClick={handlecancelPost}>
-                      &times;
-                    </span>
-                    <div className="title">
-                      <h1>Add post</h1>
-                    </div>
-                    <form
-                      className="register-inputs add-post"
-                      onSubmit={handlePostSubmit}
-                    >
-                      <div className="input-group">
-                        <input
-                          className="input"
-                          type="text"
-                          name="name"
-                          required={true}
-                          value={formValues.name}
-                          onChange={handlePostInputChange}
-                        />
-                        <label htmlFor="Foodname" className="input-label">
-                          Food name
-                        </label>
+                {isModalOpen && (
+                  <div className="modal2">
+                    <div className="modal2-content">
+                      <span className="close1" onClick={closeModal}>
+                        &times;
+                      </span>
+                      <div className="title">
+                        <h1>Edit post</h1>
                       </div>
-                      <div
-                        className="
-input-group"
+                      <form
+                        className="profile-form"
+                        key={postToEdit._id}
+                        onSubmit={handleUpdatePost}
                       >
                         <input
-                          className="input"
+                          type="text"
+                          name="name"
+                          value={postToEdit.name}
+                          onChange={(e) => handlepostChange(e, postToEdit)}
+                        />
+
+                        <input
                           type="number"
                           name="quantity"
                           required={true}
-                          value={formValues.quantity}
-                          onChange={handlePostInputChange}
+                          value={postToEdit.quantity}
+                          onChange={handlepostChange}
                         />
-                        <label htmlFor="Foodname" className="input-label">
-                          Quantity
-                        </label>
-                      </div>
-                      <div className="input-group">
+
                         <input
-                          className="input"
-                          type="Date"
-                          name="expirydate"
-                          required={true}
-                          value={formValues.expiredate}
-                          onChange={handlePostInputChange}
-                        />
-                        {/* <label htmlFor="Foodname" className="input-label">
-            expire-date
-            </label> */}
-                      </div>
-                      <div className="input-group">
-                        <input
-                          className="input"
                           type="text"
                           name="description"
                           required={true}
-                          value={formValues.description}
-                          onChange={handlePostInputChange}
+                          value={postToEdit.description}
+                          onChange={handlepostChange}
                         />
-                        <label htmlFor="Foodname" className="input-label">
-                          description
-                        </label>
-                      </div>
-                      <div className="input-group">
+
                         <input
-                          className="input"
+                          type="date"
+                          name="expirydate"
+                          required={true}
+                          value={postToEdit.expirydate.slice(0, 10)}
+                          onChange={handlepostChange}
+                        />
+                        <input
                           type="file"
                           name="image"
-                          required={true}
-                          value={formValues.image}
-                          onChange={handlePostInputChange}
+                          // required={true}
+                          onChange={(e) => handleFileChange(e, postToEdit._id)}
                         />
-                        {/* <label htmlFor="Foodname" className="input-label">
-            image
-            </label> */}
-                      </div>
-                      <div className="input-group">
-                        <select
-                          className="select"
-                          name="Category"
-                          required={true}
-                          onChange={handlePostInputChange}
-                        >
-                          <option value="" style={{ display: "none" }}>
-                            Select a category
-                          </option>
-                          {categories &&
-                            categories.success &&
-                            categories.response &&
-                            categories.response.map((category) => (
-                              <option key={category._id} value={category._id}>
-                                {category.name}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                      <div className="post-btn-group">
-                        <div className="cancel-button">
-                          <button
-                            type="submit"
-                            className="cancel"
-                            onClick={handlecancelPost}
+
+                        <div className="group">
+                          <select
+                            className="select"
+                            name="Category"
+                            required={true}
+                            value={postToEdit.Category}
+                            onChange={handlepostChange}
                           >
-                            Cancel
+                            <option value={postToEdit.Category} hidden>
+                              {postToEdit.Category
+                                ? postToEdit.Category.name
+                                : "Select Category"}
+                            </option>
+
+                            {categories &&
+                              categories.success &&
+                              categories.response &&
+                              categories.response.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                  {category.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                        <div className="post-btn-group">
+                          <div className="cancel-button">
+                            <button
+                              type="button"
+                              className="cancel"
+                              onClick={closeModal}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                          <button type="submit" className="cancel">
+                            Update
                           </button>
                         </div>
-                        <button type="submit" className="cancel">
-                          Add
-                        </button>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+                {showForm && (
+                  <div className="post-form-popup">
+                    <div className="post-container">
+                      <span className="close" onClick={handlecancelPost}>
+                        &times;
+                      </span>
+                      <div className="title">
+                        <h1>Add post</h1>
+                      </div>
+                      <form
+                        className="register-inputs add-post"
+                        onSubmit={handlePostSubmit}
+                      >
+                        <div className="input-group">
+                          <input
+                            className="input"
+                            type="text"
+                            name="name"
+                            required={true}
+                            value={formValues.name}
+                            onChange={handlePostInputChange}
+                          />
+                          <label htmlFor="Foodname" className="input-label">
+                            Food name
+                          </label>
+                        </div>
+                        <div
+                          className="
+input-group"
+                        >
+                          <input
+                            className="input"
+                            type="number"
+                            name="quantity"
+                            required={true}
+                            value={formValues.quantity}
+                            onChange={handlePostInputChange}
+                          />
+                          <label htmlFor="Foodname" className="input-label">
+                            Quantity
+                          </label>
+                        </div>
+                        <div className="input-group">
+                          <input
+                            className="input"
+                            type="Date"
+                            name="expirydate"
+                            required={true}
+                            value={formValues.expiredate}
+                            onChange={handlePostInputChange}
+                          />
+                          {/* <label htmlFor="Foodname" className="input-label">
+            expire-date
+            </label> */}
+                        </div>
+                        <div className="input-group">
+                          <input
+                            className="input"
+                            type="text"
+                            name="description"
+                            required={true}
+                            value={formValues.description}
+                            onChange={handlePostInputChange}
+                          />
+                          <label htmlFor="Foodname" className="input-label">
+                            description
+                          </label>
+                        </div>
+                        <div className="input-group">
+                          <input
+                            className="input"
+                            type="file"
+                            name="image"
+                            required={true}
+                            value={formValues.image}
+                            onChange={handlePostInputChange}
+                          />
+                          {/* <label htmlFor="Foodname" className="input-label">
+            image
+            </label> */}
+                        </div>
+                        <div className="input-group">
+                          <select
+                            className="select"
+                            name="Category"
+                            required={true}
+                            onChange={handlePostInputChange}
+                          >
+                            <option value="" style={{ display: "none" }}>
+                              Select a category
+                            </option>
+                            {categories &&
+                              categories.success &&
+                              categories.response &&
+                              categories.response.map((category) => (
+                                <option key={category._id} value={category._id}>
+                                  {category.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                        <div className="post-btn-group">
+                          <div className="cancel-button">
+                            <button
+                              type="submit"
+                              className="cancel"
+                              onClick={handlecancelPost}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                          <button type="submit" className="cancel">
+                            Add
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

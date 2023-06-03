@@ -154,6 +154,7 @@
   height: 20px;
 }
 .user-name{
+  cursor: pointer;
   font-feature-settings: "smcp";
   font-variant: small-caps;
   font-size: 1.5rem;

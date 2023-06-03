@@ -109,7 +109,6 @@
   grid-template-columns: repeat(3, 1fr); 
   margin: 0 auto;
   gap: 10px;
-  overflow: auto;
   grid-template-rows: auto;
   padding: 50px 20px;
 }
