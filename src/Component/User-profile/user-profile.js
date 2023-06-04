@@ -194,6 +194,33 @@ function User() {
       });
     }
   };
+
+  useEffect(() => {
+    fetchUserPosts();
+  }, []);
+
+  const fetchUserPosts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://surplus-app-api.onrender.com/api/Food/user/${id}`
+      );
+
+      const products = response.data.foods;
+      setPosts(products);
+      setTotalPages(response.data.totalPages);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred while fetching user posts.",
+      });
+    }
+  };
+
   const handlePostInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -235,7 +262,6 @@ function User() {
       formData.append("description", postFormValues.description);
       formData.append("image", e.target.image.files[0]);
       formData.append("Category", postFormValues.Category);
-
       formData.append("User", id);
 
       const response = await axios.post(
@@ -244,7 +270,6 @@ function User() {
         { headers }
       );
 
-      console.log(response.data);
       setShowForm(false);
       setLoading(false);
       Swal.fire({
@@ -254,7 +279,15 @@ function User() {
       });
 
       const newPost = response.data;
-      setPosts((prevPosts) => [...prevPosts, newPost]);
+      handleNewPost(newPost);
+
+      setPostFormValues({
+        name: "",
+        quantity: "",
+        expirydate: "",
+        description: "",
+        Category: "",
+      });
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -265,36 +298,9 @@ function User() {
       });
     }
   };
-  useEffect(() => {
-    fetchUserPosts();
-  }, [page]);
 
-  const fetchUserPosts = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `https://surplus-app-api.onrender.com/api/Food/user/${id}`,
-        {
-          params: {
-            page: page,
-          },
-        }
-      );
-      console.log(response);
-      const products = response.data.foods;
-      setPosts(products);
-      console.log(products);
-      setTotalPages(response.data.totalPages);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "An error occurred while fetching user posts.",
-      });
-    }
+  const handleNewPost = (newPost) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
   };
 
   const handleUpdatePost = async (e) => {
@@ -338,6 +344,16 @@ function User() {
       });
 
       const updatedPost = response.data;
+
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => {
+          if (post._id === updatedPost._id) {
+            return updatedPost;
+          } else {
+            return post;
+          }
+        })
+      );
     } catch (error) {
       console.error("Error updating post:", error);
       setLoading(false);
@@ -348,6 +364,7 @@ function User() {
       });
     }
   };
+
   const handlepostChange = (e) => {
     const { name, value } = e.target;
     console.log("Input change:", name, value);
@@ -396,6 +413,7 @@ function User() {
           title: "Post Deleted",
           text: "The post has been deleted successfully.",
         });
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -455,71 +473,47 @@ function User() {
             ) : (
               <div className="profile-posts">
                 {Array.isArray(posts) && posts.length > 0 ? (
-                  <>
-                    {posts
-                      .filter((post) => post.User._id === id)
-                      .map((post, index) => (
-                        <div className="post" key={index}>
-                          <div className="post__image">
-                            <img
-                              src={
-                                "https://surplus-app-api.onrender.com/" +
-                                post.image
-                              }
-                              alt={post.name}
-                            />
+                  posts.map((post, index) => (
+                    <div className="post" key={index}>
+                      <div className="post__image">
+                        <img
+                          src={
+                            "https://surplus-app-api.onrender.com/" + post.image
+                          }
+                          alt={post.name}
+                        />
+                      </div>
+                      <div className="post__info">
+                        <div className="post__info--title">
+                          <h3>{post.name}</h3>
+                          <div className="Food__info">
+                            <p>{post.description}</p>
                           </div>
-                          <div className="post__info">
-                            <div className="post__info--title">
-                              <h3>{post.name}</h3>
-                              <div className="Food__info">
-                                <p>{post.description}</p>
-                              </div>
-                              <div className="post__actions">
-                                <button
-                                  className="edit-button"
-                                  onClick={() => {
-                                    setIsModalOpen(true);
-                                    setPostToEdit(post);
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon={faEdit} />
-                                </button>
-                                <button
-                                  className="delete-button"
-                                  onClick={() => deletePost(post._id)}
-                                >
-                                  <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                              </div>
-                            </div>
+                          <div className="post__actions">
+                            <button
+                              className="edit-button"
+                              onClick={() => {
+                                setIsModalOpen(true);
+                                setPostToEdit(post);
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faEdit} />
+                            </button>
+                            <button
+                              className="delete-button"
+                              onClick={() => deletePost(post._id)}
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </button>
                           </div>
                         </div>
-                      ))}
-                  </>
+                      </div>
+                    </div>
+                  ))
                 ) : (
                   <p>No posts available.</p>
                 )}
 
-                <div className="pagination">
-                  <button
-                    className="pagination-btn"
-                    onClick={handlePreviousPage}
-                    disabled={page === 1}
-                  >
-                    Previous
-                  </button>
-                  <span className="pagination-info">
-                    Page {page} of {totalPages}
-                  </span>
-                  <button
-                    className="pagination-btn"
-                    onClick={handleNextPage}
-                    disabled={page === totalPages}
-                  >
-                    Next
-                  </button>
-                </div>
                 {isModalOpen && (
                   <div className="modal2">
                     <div className="modal2-content">
@@ -734,6 +728,25 @@ input-group"
                 )}
               </div>
             )}
+            <div className="pagination">
+              <button
+                className="pagination-btn"
+                onClick={handlePreviousPage}
+                disabled={page === 1}
+              >
+                Previous
+              </button>
+              <span className="pagination-info">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                className="pagination-btn"
+                onClick={handleNextPage}
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
