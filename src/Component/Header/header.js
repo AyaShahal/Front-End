@@ -164,10 +164,13 @@ const close=()=>{
 ) : (
     <>
     <div className="dropdown">
-      <div className="dropdown-toggle" onClick={handleClick}>
+      {/* <div className="dropdown-toggle" onClick={handleClick}>
         Login
-      </div>
-      {Open && (
+      </div> */}
+      <NavLink to="/login" className="links">
+      Login
+      </NavLink>
+      {/* {Open && (
         <div className="dropdown-menu">
           <NavLink to="/login" className="links"   onClick={close}>
             User 
@@ -176,7 +179,7 @@ const close=()=>{
             Admin 
           </NavLink>
         </div>
-      )}
+      )} */}
     </div>
    
       <NavLink to="/Signup" className="button">
