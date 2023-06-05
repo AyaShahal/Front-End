@@ -14,7 +14,7 @@ function Join() {
         provides the tools and resources to make a meaningful impact
       </p>
       <Link to="/signup">
-  <button className="btn btn-primary">Join Now</button>
+  <button className="btn-primary">Join Now</button>
 </Link>
     </div>
   );
